@@ -1,5 +1,5 @@
-# Server API REVIEW COMPANY
-Server API REVIEW COMPANY
+# Server API Review Company
+Server API Review Company
 
 A nice project with a nice description
 
