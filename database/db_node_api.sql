@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-06 17:33:05.4380
+-- Generation Time: 2020-03-08 22:27:55.8530
 -- -------------------------------------------------------------
 
 
@@ -19,7 +19,7 @@
 
 
 CREATE TABLE `products` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `color` varchar(255) DEFAULT NULL,
   `price` decimal(10,0) DEFAULT NULL,
@@ -28,21 +28,41 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `rc_companys` (
-  `company_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `member_total` int NOT NULL DEFAULT '0',
+  `company_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(255) NOT NULL,
+  `member_total` int(11) NOT NULL DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `job_id` int DEFAULT '-1',
-  `province_id` int DEFAULT '-1',
+  `job_id` int(11) DEFAULT '-1',
+  `province_id` int(11) DEFAULT '-1',
+  `short_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `rc_jobs` (
+  `job_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `job_name` varchar(255) NOT NULL,
+  `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`job_id`),
+  UNIQUE KEY `job_id` (`job_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `rc_provinces` (
+  `province_id` bigint(20) unsigned NOT NULL,
+  `province_name` varchar(255) NOT NULL,
+  `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `type` varchar(50) NOT NULL,
+  PRIMARY KEY (`province_id`),
+  UNIQUE KEY `province_id` (`province_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `rc_users` (
-  `user_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `gender` bigint unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
-  `nick_name` varchar(128) DEFAULT NULL,
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gender` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
+  `nick_name` varchar(100) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -50,7 +70,7 @@ CREATE TABLE `rc_users` (
   `password` varchar(512) NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` date DEFAULT NULL,
-  `active` tinyint unsigned NOT NULL DEFAULT '1',
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -68,16 +88,87 @@ INSERT INTO `products` (`id`, `name`, `color`, `price`, `emal`) VALUES
 ('4', 'Vertu', 'Green', '80000000', NULL),
 ('5', 'Vertu 222', 'Green 2222', '80000000', NULL);
 
-INSERT INTO `rc_companys` (`company_id`, `name`, `address`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`) VALUES
-('1', 'Công ty Cổ phẩn công nghệ GVN Technology', '200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('2', 'Công ty TNHH Thiên ngọc Minh Uy', '201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('3', 'Công ty Cổ phần đầu tư và phát triển', '202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('4', 'Công ty Công nghệ VNext', '203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('5', 'Công ty Xây dựng', '204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('6', 'Công ty Bất động sản HQV', '205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('7', 'Binh đoàn 789 HQV', '206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('8', 'NavaTech tầng 8 Hoàng Quốc Việt', '207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL),
-('9', 'Công ty VietIS Technology', '208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL);
+INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`) VALUES
+('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Cổ phẩn công nghệ GVN Technology', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'xxx'),
+('201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '2', 'Công ty TNHH Thiên ngọc Minh Uy', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ccc'),
+('202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '3', 'Công ty Cổ phần đầu tư và phát triển', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd'),
+('203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '4', 'Công ty Công nghệ VNext', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'aaa'),
+('204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '5', 'Công ty Xây dựng', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd'),
+('205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '6', 'Công ty Bất động sản HQV', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'sss'),
+('206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '7', 'Binh đoàn 789 HQV', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'zzz'),
+('207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '8', 'NavaTech tầng 8 Hoàng Quốc Việt', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'nnn'),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '9', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'mmm');
+
+INSERT INTO `rc_jobs` (`job_id`, `job_name`, `date_add`, `date_upd`) VALUES
+('1', 'Công nghệ thông tin', '2020-03-08 21:06:20', '2020-03-08 21:06:20'),
+('2', 'Y tế', '2020-03-08 21:07:03', '2020-03-08 21:07:03'),
+('3', 'Viễn thông', '2020-03-08 21:07:03', '2020-03-08 21:07:03'),
+('4', 'Giáo dục', '2020-03-08 21:07:03', '2020-03-08 21:07:03');
+
+INSERT INTO `rc_provinces` (`province_id`, `province_name`, `date_add`, `date_upd`, `type`) VALUES
+('1', 'Hà Nội', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
+('2', 'Hà Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('4', 'Cao Bằng', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('6', 'Bắc Kạn', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('8', 'Tuyên Quang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('10', 'Lào Cai', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('11', 'Điện Biên', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('12', 'Lai Châu', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('14', 'Sơn La', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('15', 'Yên Bái', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('17', 'Hòa Bình', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('19', 'Thái Nguyên', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('20', 'Lạng Sơn', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('22', 'Quảng Ninh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('24', 'Bắc Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('25', 'Phú Thọ', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('26', 'Vĩnh Phúc', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('27', 'Bắc Ninh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('30', 'Hải Dương', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('31', 'Hải Phòng', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
+('33', 'Hưng Yên', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('34', 'Thái Bình', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('35', 'Hà Nam', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('36', 'Nam Định', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('37', 'Ninh Bình', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('38', 'Thanh Hóa', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('40', 'Nghệ An', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('42', 'Hà Tĩnh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('44', 'Quảng Bình', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('45', 'Quảng Trị', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('46', 'Thừa Thiên Huế', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('48', 'Đà Nẵng', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
+('49', 'Quảng Nam', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('51', 'Quảng Ngãi', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('52', 'Bình Định', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('54', 'Phú Yên', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('56', 'Khánh Hòa', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('58', 'Ninh Thuận', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('60', 'Bình Thuận', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('62', 'Kon Tum', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('64', 'Gia Lai', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('66', 'Đắk Lắk', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('67', 'Đắk Nông', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('68', 'Lâm Đồng', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('70', 'Bình Phước', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('72', 'Tây Ninh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('74', 'Bình Dương', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('75', 'Đồng Nai', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('77', 'Bà Rịa - Vũng Tàu', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('79', 'Hồ Chí Minh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
+('80', 'Long An', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('82', 'Tiền Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('83', 'Bến Tre', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('84', 'Trà Vinh', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('86', 'Vĩnh Long', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('87', 'Đồng Tháp', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('89', 'An Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('91', 'Kiên Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('92', 'Cần Thơ', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
+('93', 'Hậu Giang', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('94', 'Sóc Trăng', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('95', 'Bạc Liêu', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh'),
+('96', 'Cà Mau', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Tỉnh');
 
 INSERT INTO `rc_users` (`user_id`, `gender`, `nick_name`, `first_name`, `last_name`, `email`, `phone`, `password`, `description`, `birthday`, `active`, `deleted`, `date_add`, `date_upd`) VALUES
 ('34', '1', 'Duy DVC', '', '', 'updatetest@gmail.com', '0987456123', '$2a$10$EhSqxndxV0f78akTfG9xY.o5Qtng6h6vIGmRCR3duh/XrDYxHx57C', '', '1996-12-09', '0', '0', '2020-03-05 14:17:22', '2020-03-05 14:17:22'),
@@ -115,7 +206,7 @@ INSERT INTO `rc_users` (`user_id`, `gender`, `nick_name`, `first_name`, `last_na
 ('73', '1', 'jnnnm', NULL, NULL, 'minh100@gmail.com', '0988999999', '$2a$10$NHMb8I1V3fPsHJek2frTw.qGDMYNYOjkdydBiPhT34p0oqIk.bwsG', NULL, '2020-02-06', '1', '0', '2020-02-06 09:05:23', '2020-02-06 09:05:23'),
 ('74', '1', 'enqtran', NULL, NULL, 'enqtran@gmail.com', '0123456789', '$2a$10$fsDFXOAmg5hFVSK5oVu7d.EYBKjGPCIK.xK8i607NjbH4D85Q2DTy', NULL, '2000-01-01', '1', '0', '2020-02-13 07:28:56', '2020-02-13 07:28:56'),
 ('75', '1', 'b', NULL, NULL, 'mit@gmail.com', '0963258369', '$2a$10$xujFjQHkgW60Sjdn53W4/.I.pdkM5Z9/hMC/b3j7cJpBDTDiS7Fna', NULL, '2009-02-27', '1', '0', '2020-02-27 09:35:37', '2020-02-27 09:35:37'),
-('76', '1', 'Đức Thụt', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '$2a$10$Iin3AINJW6C6s3bjoZ/Tl.u/Bp6Pt1egwY4RkhRaFWbiKAo.azNnW', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-02-27 11:21:19', '2020-03-02 17:53:37'),
+('76', '1', 'Đức Thụt', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '123456', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-02-27 11:21:19', '2020-03-02 17:53:37'),
 ('77', '1', 'anhpt', NULL, NULL, 'anhptse03395@gmail.com', '0982803436', '$2a$10$Y0wUa/pppfxlSpKcH.N97.UKGF3EbxeptCPgRRrQKEWQXIyZM9JTC', NULL, '1993-01-07', '1', '0', '2020-02-27 16:32:16', '2020-02-27 16:32:16'),
 ('78', '1', 'toantroll', NULL, NULL, 'vuongvantoan2305@gmail.com', '0393240523', '$2a$10$5.3xM7gx4hP5yzbntag2H.tZFNkg5Rd44s4BmjBZZ2lnEZWHh/bsi', NULL, '1995-05-23', '1', '0', '2020-02-28 18:13:29', '2020-02-28 18:13:29'),
 ('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '123456', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33');

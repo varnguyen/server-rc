@@ -37,7 +37,6 @@ let login = (req, res) => {
             } else {
                 if (response.length > 0) {
                     // Nếu tồn tại user thì sẽ lấy password mà user truyền lên, băm ra và so sánh với mật khẩu của user lưu trong Database
-                    console.log(response[0].password, password);
                     if (response[0].password == password) {
                         // Nếu password đúng thì chúng ta bắt đầu thực hiện tạo mã JWT và gửi về cho người dùng.
                         processLoginSuccess = async () => {

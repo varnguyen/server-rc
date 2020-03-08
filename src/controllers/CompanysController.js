@@ -5,7 +5,12 @@ const Company = require('../models/CompanyModel');
 let companyLists = (req, result) => {
     Company.getAllCompany((err, response) => {
         if (err) throw err
-        return result.status(200).json(response)
+        return result.status(200).json({
+            "code": 0,
+            "message": "",
+            "error": "",
+            "data": response
+        })
     })
 }
 let companyDetail = (req, result) => {
@@ -13,7 +18,12 @@ let companyDetail = (req, result) => {
     Company.getCompanyById(companyId, (err, response) => {
         if (err) throw err
         if (response.length > 0) {
-            return result.status(200).json(response[0])
+            return result.status(200).json({
+                "code": 0,
+                "message": "",
+                "error": "",
+                "data": response[0]
+            })
         }
         return result.status(200).json({ message: 'Company Not Found!' })
     })
