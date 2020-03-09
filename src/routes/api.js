@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const AuthMiddleWare = require("../middleware/AuthMiddleware");
 const AuthController = require("../controllers/AuthController");
+const ValidateController = require("../controllers/ValidateController");
 const ProductsController = require("../controllers/ProductsController");
 const UsersController = require("../controllers/UsersController");
 const CompanysController = require("../controllers/CompanysController");
@@ -21,7 +22,11 @@ let initAPIs = (app) => {
     // Refresh Token
     router.post("/api/auth/refresh-token", AuthController.refreshToken);
     // Register
-    router.post("/api/register", UsersController.createUser);
+    router.post(
+        "/api/register",
+        ValidateController.validate('createUser'),
+        UsersController.createUser
+    );
     // Province
     router.get("/api/province", ProvincesController.provinceLists);
     // Job

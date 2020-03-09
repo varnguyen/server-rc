@@ -26,12 +26,13 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 let login = (req, res) => {
     try {
         const { email, password } = req.body;
-        let sql = 'SELECT * FROM rc_users WHERE email = ?'
-        db.query(sql, [email], (err, response, fields) => {
+        // let sql = 'SELECT * FROM rc_users WHERE email = ?'
+        // User.findEmail(email,(err, response) => 
+        // db.query(sql, [email], (err, response, fields) =>
+        User.findEmail(email, (err, response) => {
             if (err) {
-                console.log("Err ocurred", err);
                 res.send({
-                    "code": 400,
+                    "code": 500,
                     "failed": "Err ocurred"
                 })
             } else {

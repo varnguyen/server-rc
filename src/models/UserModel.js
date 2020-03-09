@@ -7,14 +7,11 @@ const User = function (user) {
     this.fake_name = user.fake_name;
     this.first_name = user.first_name;
     this.last_name = user.last_name;
-    this.email = user.email;
     this.phone = user.phone;
-    this.passwd = user.passwd;
     this.description = user.description;
     this.birthday = user.birthday;
     this.active = user.active;
     this.deleted = user.deleted;
-    this.date_add = new Date();
     this.date_upd = new Date();
 }
 
@@ -41,6 +38,16 @@ User.getUserById = function (userId, result) {
 User.findEmail = function (email, result) {
     let sql = 'SELECT * FROM rc_users WHERE email = ?'
     db.query(sql, [email], (err, response) => {
+        if (err) {
+            result(err, null);
+        } else {
+            result(null, response);
+        }
+    })
+}
+User.findNickname = function (nickName, result) {
+    let sql = 'SELECT * FROM rc_users WHERE nick_name = ?'
+    db.query(sql, [nickName], (err, response) => {
         if (err) {
             result(err, null);
         } else {
