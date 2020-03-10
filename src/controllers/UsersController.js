@@ -50,46 +50,41 @@ let createUser = (req, result) => {
     let data = req.body;
     const { nick_name, email, password, gender } = req.body
     const errors = validationResult(req);
-    const errorss = [];
+    const errorss = {};
     if (!errors.isEmpty()) {
         return result.status(422).json({ errors: errors.array() });
     } else {
-        // Validate Nickname
-        User.findNickname(nick_name, (err, response) => {
-            console.log(err, response)
-            if (err) {
-                errorss.nick_name 
-                result.send({
-                    "code": 400,
-                    "failed": "Err ocurred"
-                })
-            } else {
-                if (response.length > 0) {
-                    // Đã trùng email
-                    result.send({
-                        "code": 204,
-                        "message": "Nickname đã được sử dụng"
-                    });
-                }
-            }
-        })
-        // Validate Email
-        User.findEmail(email, (err, response) => {
-            if (err) {
-                result.send({
-                    "code": 400,
-                    "failed": "Err ocurred"
-                })
-            } else {
-                if (response.length > 0) {
-                    // Đã trùng email
-                    result.send({
-                        "code": 204,
-                        "message": "Email đã được sử dụng"
-                    });
-                }
-            }
-        })
+        // // Validate Email
+        // User.findEmail(email, (err, response) => {
+        //     if (err) {
+        //         result.json({
+        //             "code": 500,
+        //             "failed": "Error on the server."
+        //         })
+        //     } else {
+        //         if (response.length > 0) {
+        //             // Đã trùng email
+        //             errorss["email"] = "Email đã được sử dụng."
+        //             result.status(400).send({ errorss })
+        //         }
+        //     }
+        // })
+        // // Validate Email
+        // User.findNickname(nick_name, (err, response) => {
+        //     if (err) {
+        //         result.json({
+        //             "code": 500,
+        //             "failed": "Error on the server."
+        //         })
+        //     } else {
+        //         if (response.length > 0) {
+        //             // Đã trùng email
+        //             errorss["nick_name"] = "Nickname đã được sử dụng."
+        //             result.status(400).send({ errorss })
+        //         }
+        //     }
+        // })
+
 
         // if (!String(nick_name).trim()) {
         //     errors.name = 'Invalid value';
@@ -108,23 +103,19 @@ let createUser = (req, result) => {
         // if (password.trim().length > 16) {
         //     errors.password = 'Maxlength is 16';
         // }
+
+
+
+        // const isValidEmail = (email) => {
+        //     var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        //     return regex.test(String(email).toLowerCase());
+        // }
+
+        User.createUser(new User(data), (err, response) => {
+            if (err) throw err
+            return result.status(200).json({ message: 'Insert success!' })
+        })
     }
-
-
-    return;
-    const isValidEmail = (email) => {
-        var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(String(email).toLowerCase());
-    }
-
-
-    return result.status(400).json({ errors })
-
-    return;
-    User.createUser(new User(data), (err, response) => {
-        if (err) throw err
-        return result.status(200).json({ message: 'Insert success!' })
-    })
 }
 let deleteUser = (req, result) => {
     let userId = req.params.userId;

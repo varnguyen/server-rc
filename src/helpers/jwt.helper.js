@@ -14,7 +14,6 @@ let generateToken = (user, secretSignature, tokenLife) => {
         // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
         const userData = {
             user_id: user.user_id,
-            name: user.name,
             email: user.email,
         }
         // Thực hiện ký và tạo token

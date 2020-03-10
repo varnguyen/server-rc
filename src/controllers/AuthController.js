@@ -11,7 +11,7 @@ const debug = console.log.bind(console);
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
 let tokenList = {};
 // Thời gian sống của token
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "3650d";
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit";
 // Thời gian sống của refreshToken
@@ -33,7 +33,7 @@ let login = (req, res) => {
             if (err) {
                 res.send({
                     "code": 500,
-                    "failed": "Err ocurred"
+                    "failed": "Error on the server."
                 })
             } else {
                 if (response.length > 0) {
@@ -44,7 +44,7 @@ let login = (req, res) => {
                             const accessToken = await jwtHelper.generateToken(response[0], accessTokenSecret, accessTokenLife);
                             res.send({
                                 "code": 0,
-                                "message": "Login success",
+                                "message": "Login success.",
                                 "data": {
                                     "token": accessToken
                                 }
@@ -54,16 +54,16 @@ let login = (req, res) => {
                     } else {
                         // Nếu password sai thì reject: Email or password is incorrect
                         res.send({
-                            "code": 204,
-                            "message": "Email or password is incorrect"
+                            "code": 401,
+                            "message": "Email or password is incorrect."
                         });
                     }
                 } else {
                     // Đầu tiên Kiểm tra xem email người dùng đã tồn tại trong hệ thống hay chưa?
                     // Nếu chưa tồn tại thì reject: Email does not exits
                     res.send({
-                        "code": 204,
-                        "message": "Email does not exits"
+                        "code": 404,
+                        "message": "Email does not exits."
                     });
                 }
             }
@@ -115,7 +115,7 @@ let refreshToken = async (req, res) => {
             // có thể mở comment dòng debug bên dưới để xem là rõ nhé.
             debug("decoded: ", decoded);
             const userFakeData = decoded.data;
-            debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 2 giờ.]`);
+            debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
             const accessToken = await jwtHelper.generateToken(userFakeData, accessTokenSecret, accessTokenLife);
             // gửi token mới về cho người dùng
             return res.status(200).json({ accessToken });

@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-08 22:27:55.8530
+-- Generation Time: 2020-03-10 22:21:27.1250
 -- -------------------------------------------------------------
 
 
@@ -37,6 +37,7 @@ CREATE TABLE `rc_companys` (
   `job_id` int(11) DEFAULT '-1',
   `province_id` int(11) DEFAULT '-1',
   `short_name` varchar(255) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
@@ -70,8 +71,8 @@ CREATE TABLE `rc_users` (
   `password` varchar(512) NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` date DEFAULT NULL,
-  `active` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `active` tinyint(3) unsigned DEFAULT '1',
+  `deleted` tinyint(1) DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
@@ -79,7 +80,7 @@ CREATE TABLE `rc_users` (
   KEY `customer_login` (`email`,`password`(255)) USING BTREE,
   KEY `id_customer_passwd` (`user_id`,`password`(255)) USING BTREE,
   KEY `id_gender` (`gender`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 INSERT INTO `products` (`id`, `name`, `color`, `price`, `emal`) VALUES
 ('1', 'Iphone X', 'Black', '1000000', NULL),
@@ -88,16 +89,16 @@ INSERT INTO `products` (`id`, `name`, `color`, `price`, `emal`) VALUES
 ('4', 'Vertu', 'Green', '80000000', NULL),
 ('5', 'Vertu 222', 'Green 2222', '80000000', NULL);
 
-INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`) VALUES
-('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Cổ phẩn công nghệ GVN Technology', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'xxx'),
-('201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '2', 'Công ty TNHH Thiên ngọc Minh Uy', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ccc'),
-('202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '3', 'Công ty Cổ phần đầu tư và phát triển', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd'),
-('203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '4', 'Công ty Công nghệ VNext', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'aaa'),
-('204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '5', 'Công ty Xây dựng', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd'),
-('205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '6', 'Công ty Bất động sản HQV', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'sss'),
-('206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '7', 'Binh đoàn 789 HQV', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'zzz'),
-('207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '8', 'NavaTech tầng 8 Hoàng Quốc Việt', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'nnn'),
-('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '9', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'mmm');
+INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`, `active`) VALUES
+('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Cổ phẩn công nghệ GVN Technology', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'xxx', '1'),
+('201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '2', 'Công ty TNHH Thiên ngọc Minh Uy', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ccc', '1'),
+('202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '3', 'Công ty Cổ phần đầu tư và phát triển', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd', '1'),
+('203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '4', 'Công ty Công nghệ VNext', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'aaa', '1'),
+('204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '5', 'Công ty Xây dựng', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd', '1'),
+('205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '6', 'Công ty Bất động sản HQV', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'sss', '1'),
+('206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '7', 'Binh đoàn 789 HQV', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'zzz', '1'),
+('207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '8', 'NavaTech tầng 8 Hoàng Quốc Việt', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'nnn', '1'),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '9', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'mmm', '1');
 
 INSERT INTO `rc_jobs` (`job_id`, `job_name`, `date_add`, `date_upd`) VALUES
 ('1', 'Công nghệ thông tin', '2020-03-08 21:06:20', '2020-03-08 21:06:20'),
@@ -206,10 +207,11 @@ INSERT INTO `rc_users` (`user_id`, `gender`, `nick_name`, `first_name`, `last_na
 ('73', '1', 'jnnnm', NULL, NULL, 'minh100@gmail.com', '0988999999', '$2a$10$NHMb8I1V3fPsHJek2frTw.qGDMYNYOjkdydBiPhT34p0oqIk.bwsG', NULL, '2020-02-06', '1', '0', '2020-02-06 09:05:23', '2020-02-06 09:05:23'),
 ('74', '1', 'enqtran', NULL, NULL, 'enqtran@gmail.com', '0123456789', '$2a$10$fsDFXOAmg5hFVSK5oVu7d.EYBKjGPCIK.xK8i607NjbH4D85Q2DTy', NULL, '2000-01-01', '1', '0', '2020-02-13 07:28:56', '2020-02-13 07:28:56'),
 ('75', '1', 'b', NULL, NULL, 'mit@gmail.com', '0963258369', '$2a$10$xujFjQHkgW60Sjdn53W4/.I.pdkM5Z9/hMC/b3j7cJpBDTDiS7Fna', NULL, '2009-02-27', '1', '0', '2020-02-27 09:35:37', '2020-02-27 09:35:37'),
-('76', '1', 'Đức Thụt', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '123456', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-02-27 11:21:19', '2020-03-02 17:53:37'),
+('76', '1', 'enqminh', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '123456', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-02-27 11:21:19', '2020-03-02 17:53:37'),
 ('77', '1', 'anhpt', NULL, NULL, 'anhptse03395@gmail.com', '0982803436', '$2a$10$Y0wUa/pppfxlSpKcH.N97.UKGF3EbxeptCPgRRrQKEWQXIyZM9JTC', NULL, '1993-01-07', '1', '0', '2020-02-27 16:32:16', '2020-02-27 16:32:16'),
 ('78', '1', 'toantroll', NULL, NULL, 'vuongvantoan2305@gmail.com', '0393240523', '$2a$10$5.3xM7gx4hP5yzbntag2H.tZFNkg5Rd44s4BmjBZZ2lnEZWHh/bsi', NULL, '1995-05-23', '1', '0', '2020-02-28 18:13:29', '2020-02-28 18:13:29'),
-('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '123456', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33');
+('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '123456', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33'),
+('81', '0', 'minhnc', NULL, NULL, 'minhnc@gmail.com', NULL, '123456', NULL, NULL, NULL, NULL, '2020-03-10 21:15:47', '2020-03-10 21:15:47');
 
 
 

@@ -4,14 +4,17 @@ const db = require('../database/db')
 
 const User = function (user) {
     this.gender = user.gender;
-    this.fake_name = user.fake_name;
+    this.nick_name = user.nick_name;
     this.first_name = user.first_name;
     this.last_name = user.last_name;
+    this.email = user.email;
     this.phone = user.phone;
+    this.password = user.password;
     this.description = user.description;
     this.birthday = user.birthday;
-    this.active = user.active;
+    this.active = user.active ? user.active : 1;
     this.deleted = user.deleted;
+    this.date_add = user.date_add ? user.date_add : new Date();
     this.date_upd = new Date();
 }
 
