@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-11 17:48:55.5830
+-- Generation Time: 2020-03-11 22:31:08.5070
 -- -------------------------------------------------------------
 
 
@@ -19,7 +19,7 @@
 
 
 CREATE TABLE `products` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `color` varchar(255) DEFAULT NULL,
   `price` decimal(10,0) DEFAULT NULL,
@@ -29,22 +29,22 @@ CREATE TABLE `products` (
 
 CREATE TABLE `rc_companys` (
   `address` varchar(255) DEFAULT NULL,
-  `company_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) NOT NULL,
-  `member_total` int NOT NULL DEFAULT '0',
+  `member_total` int(11) NOT NULL DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `job_id` int DEFAULT '-1',
-  `province_id` int DEFAULT '-1',
+  `job_id` int(11) DEFAULT '-1',
+  `province_id` int(11) DEFAULT '-1',
   `short_name` varchar(255) DEFAULT NULL,
-  `active` int DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_jobs` (
-  `job_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_name` varchar(255) NOT NULL,
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -53,7 +53,7 @@ CREATE TABLE `rc_jobs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_provinces` (
-  `province_id` bigint unsigned NOT NULL,
+  `province_id` bigint(20) unsigned NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -63,8 +63,8 @@ CREATE TABLE `rc_provinces` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_users` (
-  `user_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `gender` bigint unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gender` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
   `nick_name` varchar(100) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `rc_users` (
   `password` varchar(512) NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` date DEFAULT NULL,
-  `active` tinyint unsigned DEFAULT '1',
+  `active` tinyint(3) unsigned DEFAULT '1',
   `deleted` tinyint(1) DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -214,7 +214,7 @@ INSERT INTO `rc_users` (`user_id`, `gender`, `nick_name`, `first_name`, `last_na
 ('77', '1', 'anhpt', NULL, NULL, 'anhptse03395@gmail.com', '0982803436', '$2a$10$Y0wUa/pppfxlSpKcH.N97.UKGF3EbxeptCPgRRrQKEWQXIyZM9JTC', NULL, '1993-01-07', '1', '0', '2020-02-27 16:32:16', '2020-02-27 16:32:16', NULL),
 ('78', '1', 'toantroll', NULL, NULL, 'vuongvantoan2305@gmail.com', '0393240523', '$2a$10$5.3xM7gx4hP5yzbntag2H.tZFNkg5Rd44s4BmjBZZ2lnEZWHh/bsi', NULL, '1995-05-23', '1', '0', '2020-02-28 18:13:29', '2020-02-28 18:13:29', NULL),
 ('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '123456', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33', NULL),
-('81', '0', 'minhnc', 'Nguyễn', 'Minh', 'minhnc@gmail.com', '0111111111', '123456', 'Hihi', '1995-08-29', NULL, NULL, '2020-03-10 21:15:47', '2020-03-10 21:15:47', NULL);
+('81', '1', 'MinhNC ', 'Nguyễn', 'Minh', 'minhnc@gmail.com', '0962441368', '123456', 'Hihi', '1995-08-29', NULL, NULL, '2020-03-10 21:15:47', '2020-03-10 21:15:47', NULL);
 
 
 
