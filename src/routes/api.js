@@ -30,7 +30,7 @@ let initAPIs = (app) => {
     // Province
     router.get("/api/province", ProvincesController.provinceLists);
     // Job
-    router.get("/api/job", JobsController.JobLists);
+    router.get("/api/job-type", JobsController.JobLists);
     // Companys
     router.get("/api/company", CompanysController.companyLists);
     router.post("/api/company", CompanysController.createCompany);
@@ -44,6 +44,7 @@ let initAPIs = (app) => {
 
     // Users
     router.get("/api/me/profile", UsersController.getUserInfo);
+    router.post("/api/me/update", UsersController.updateUserInfo);
 
     router.get("/api/users", UsersController.userLists);
     router.post("/api/users", UsersController.createUser);

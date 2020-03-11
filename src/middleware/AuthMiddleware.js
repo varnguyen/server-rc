@@ -19,14 +19,14 @@ let isAuth = async (req, res, next) => {
         try {
             // Thực hiện giải mã token xem có hợp lệ hay không?
             const decoded = await jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
-            var current_time = Date.now().valueOf() / 1000;
-            console.log(decoded.exp - current_time)
-            if (decoded.exp < current_time) {
-                /* expired */
-                return res.status(401).send({
-                    message: 'Token expired.',
-                });
-            }
+            // var current_time = Date.now().valueOf() / 1000;
+            // console.log(decoded.exp - current_time)
+            // if (decoded.exp < current_time) {
+            //     /* expired */
+            //     return res.status(401).send({
+            //         message: 'Token expired.',
+            //     });
+            // }
             // Nếu token hợp lệ, lưu thông tin giải mã được vào đối tượng req, dùng cho các xử lý ở phía sau.
             req.jwtDecoded = decoded;
             // Cho phép req đi tiếp sang controller.

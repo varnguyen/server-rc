@@ -26,6 +26,7 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 let login = (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log(email, password);
         // let sql = 'SELECT * FROM rc_users WHERE email = ?'
         // User.findEmail(email,(err, response) => 
         // db.query(sql, [email], (err, response, fields) =>

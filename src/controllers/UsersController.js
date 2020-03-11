@@ -40,7 +40,7 @@ let userDetail = (req, result) => {
 }
 let updateUserInfo = (req, result) => {
     let data = req.body;
-    let userId = req.params.userId;
+    let userId = data.user_id;
     User.updateUserById(userId, new User(data), (err, response) => {
         if (err) throw err
         return result.status(200).json({ message: 'Update success!' })
