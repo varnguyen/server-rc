@@ -1,3 +1,8 @@
+/**
+ * @Created by MinJa 
+ * on 12/03/2020.
+ */
+
 const database = require('../database/db');
 
 let self = {

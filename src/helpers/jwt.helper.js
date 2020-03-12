@@ -1,7 +1,8 @@
 /**
- * Created by trungquandev.com's author on 16/10/2019.
- * src/controllers/auth.js
+ * @Created by MinJa 
+ * on 05/03/2020.
  */
+
 const jwt = require("jsonwebtoken");
 /**
  * private function generateToken

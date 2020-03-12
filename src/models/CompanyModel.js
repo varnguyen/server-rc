@@ -1,3 +1,8 @@
+/**
+ * @Created by MinJa 
+ * on 08/03/2020.
+ */
+
 'use strict';
 
 const db = require('../database/db')
@@ -18,55 +23,81 @@ const Company = function (company) {
     // this.date_upd = new Date();
 }
 
-Company.getAllCompany = function (result) {
+Company.create = function (company, result) {
+    let sql = 'INSERT INTO rc_companys SET ?'
+    db.query(sql, [company], (err, response) => {
+        console.log("object", err, response);
+        if (err) {
+            console.log("create error: ", err);
+            result(err, null);
+            return;
+        } else {
+            result(null, { company_id: response.insertId, ...company });
+        }
+    })
+}
+Company.getAll = function (result) {
     let sql = 'SELECT * FROM rc_companys'
     db.query(sql, (err, response) => {
         if (err) {
+            console.log("getAll error: ", err);
             result(null, err);
-        } else {
-            result(null, response);
+            return;
         }
+        console.log("companys: ", response);
+        result(null, response);
     })
 }
-Company.getCompanyById = function (companyId, result) {
+Company.findById = function (companyId, result) {
     let sql = 'SELECT * FROM rc_companys WHERE company_id = ?'
     db.query(sql, [companyId], (err, response) => {
         if (err) {
+            console.log("findById error: ", err);
             result(err, null);
-        } else {
-            result(null, response);
+            return;
         }
+        if (response.length) {
+            console.log("found company: ", response[0]);
+            result(null, response[0]);
+            return;
+        }
+        // not found company with the id
+        result({ kind: "not_found" }, null);
     })
 }
-Company.updateCompanyById = function (companyId, company, result) {
+Company.updateById = function (companyId, company, result) {
     let sql = 'UPDATE rc_companys SET ? WHERE company_id = ?'
     db.query(sql, [company, companyId], (err, response) => {
         if (err) {
-            result(err, null);
-        } else {
-            result(null, response);
+            console.log("updateById error: ", err);
+            result(null, err);
+            return;
         }
+        if (response.affectedRows == 0) {
+            // not found company with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("updated company: ", { company_id: companyId, ...company });
+        result(null, { company_id: companyId, ...company });
     })
 }
-Company.createCompany = function (company, result) {
-    let sql = 'INSERT INTO rc_companys SET ?'
-    db.query(sql, [company], (err, response) => {
-        if (err) {
-            result(err, null);
-        } else {
-            result(null, response.company_id);
-        }
-    })
-}
-Company.removeCompany = function (companyId, result) {
+Company.remove = function (companyId, result) {
     let sql = 'DELETE FROM rc_companys WHERE company_id = ?';
     db.query(sql, [companyId], (err, response) => {
         if (err) {
+            console.log("remove error: ", err);
             result(null, err);
+            return;
         }
-        else {
-            result(null, response);
+        if (response.affectedRows == 0) {
+            // not found company with the id
+            result({ kind: "not_found" }, null);
+            return;
         }
+        console.log("deleted company with id: ", companyId);
+        result(null, response);
     })
 }
 module.exports = Company;

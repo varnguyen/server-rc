@@ -1,8 +1,8 @@
 /**
- * Created by MinJa on 05/03/2020.
- * src/controllers/auth.js
+ * @Created by MinJa 
+ * on 05/03/2020.
  */
-const db = require('../database/db')
+
 const User = require('../models/UserModel')
 
 const jwtHelper = require("../helpers/jwt.helper");
@@ -23,52 +23,37 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  * @param {*} req 
  * @param {*} res 
  */
-let login = (req, res) => {
+let login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(email, password);
-        // let sql = 'SELECT * FROM rc_users WHERE email = ?'
-        // User.findEmail(email,(err, response) => 
-        // db.query(sql, [email], (err, response, fields) =>
+        console.log("Email:", email, "- Password:", password);
+
         User.findEmail(email, (err, response) => {
             if (err) {
-                res.send({
-                    "code": 500,
-                    "failed": "Error on the server."
-                })
+                if (err.kind === "not_found") {
+                    res.status(404).send({ message: "Email does not exits." });
+                } else {
+                    res.status(500).send({ message: "Error on the server." });
+                }
             } else {
-                if (response.length > 0) {
-                    // Nếu tồn tại user thì sẽ lấy password mà user truyền lên, băm ra và so sánh với mật khẩu của user lưu trong Database
-                    if (response[0].password == password) {
-                        // Nếu password đúng thì chúng ta bắt đầu thực hiện tạo mã JWT và gửi về cho người dùng.
-                        processLoginSuccess = async () => {
-                            const accessToken = await jwtHelper.generateToken(response[0], accessTokenSecret, accessTokenLife);
-                            res.send({
-                                "code": 0,
-                                "message": "Login success.",
-                                "data": {
-                                    "token": accessToken
-                                }
-                            });
-                        }
-                        processLoginSuccess()
-                    } else {
-                        // Nếu password sai thì reject: Email or password is incorrect
+                if (response.password == password) {
+                    processLoginSuccess = async () => {
+                        const accessToken = await jwtHelper.generateToken(response, accessTokenSecret, accessTokenLife);
                         res.send({
-                            "code": 401,
-                            "message": "Email or password is incorrect."
+                            "code": 0,
+                            "message": "Login success.",
+                            "data": {
+                                "token": accessToken
+                            }
                         });
                     }
+                    processLoginSuccess()
                 } else {
-                    // Đầu tiên Kiểm tra xem email người dùng đã tồn tại trong hệ thống hay chưa?
-                    // Nếu chưa tồn tại thì reject: Email does not exits
-                    res.send({
-                        "code": 404,
-                        "message": "Email does not exits."
-                    });
+                    res.status(401).send({ message: "Email or password is incorrect." });
                 }
             }
         })
+
         // //- Đầu tiên Kiểm tra xem email người dùng đã tồn tại trong hệ thống hay chưa?
         // //- Nếu chưa tồn tại thì reject: User not found.
         // //- Nếu tồn tại user thì sẽ lấy password mà user truyền lên, băm ra và so sánh với mật khẩu của user lưu trong Database
@@ -130,7 +115,7 @@ let refreshToken = async (req, res) => {
     } else {
         // Không tìm thấy token trong request
         return res.status(403).send({
-            message: 'No token provided.',
+            message: 'No token provided refreshToken.',
         });
     }
 };

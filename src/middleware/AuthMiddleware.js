@@ -1,6 +1,8 @@
 /**
- * Created by MinJa on 05/03/2020.
+ * @Created by MinJa 
+ * on 05/03/2020.
  */
+
 const jwtHelper = require("../helpers/jwt.helper");
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit";

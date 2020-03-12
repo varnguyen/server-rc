@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-11 22:31:08.5070
+-- Generation Time: 2020-03-12 23:07:18.0040
 -- -------------------------------------------------------------
 
 
@@ -17,15 +17,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `color` varchar(255) DEFAULT NULL,
-  `price` decimal(10,0) DEFAULT NULL,
-  `emal` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `rc_companys` (
   `address` varchar(255) DEFAULT NULL,
@@ -83,14 +74,7 @@ CREATE TABLE `rc_users` (
   KEY `customer_login` (`email`,`password`(255)) USING BTREE,
   KEY `id_customer_passwd` (`user_id`,`password`(255)) USING BTREE,
   KEY `id_gender` (`gender`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
-INSERT INTO `products` (`id`, `name`, `color`, `price`, `emal`) VALUES
-('1', 'Iphone X', 'Black', '1000000', NULL),
-('2', 'Samsung S9', 'White', '1240000', NULL),
-('3', 'Oppo F5', 'Red', '7000000', NULL),
-('4', 'Vertu', 'Green', '80000000', NULL),
-('5', 'Vertu 222', 'Green 2222', '80000000', NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`, `active`, `email`, `phone`) VALUES
 ('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Cổ phẩn công nghệ GVN Technology', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'xxx', '1', 'gvn-techno@gmail.com', '0123456789'),

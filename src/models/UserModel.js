@@ -1,3 +1,8 @@
+/**
+ * @Created by MinJa 
+ * on 06/03/2020.
+ */
+
 'use strict';
 
 const db = require('../database/db')
@@ -18,34 +23,62 @@ const User = function (user) {
     this.date_upd = new Date();
 }
 
-User.getAllUser = function (result) {
-    let sql = 'SELECT * FROM rc_users'
-    db.query(sql, (err, response) => {
+User.create = function (user, result) {
+    let sql = 'INSERT INTO rc_users SET ?'
+    db.query(sql, [user], (err, response) => {
+        console.log("object", err, response);
         if (err) {
-            result(null, err);
+            console.log("createUser error: ", err);
+            result(err, null);
+            return;
         } else {
-            result(null, response);
+            result(null, { user_id: response.insertId, ...user });
         }
     })
 }
-User.getUserById = function (userId, result) {
+User.getAll = function (result) {
+    let sql = 'SELECT * FROM rc_users'
+    db.query(sql, (err, response) => {
+        if (err) {
+            console.log("getAll error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("users: ", response);
+        result(null, response);
+    })
+}
+User.findById = function (userId, result) {
     let sql = 'SELECT * FROM rc_users WHERE user_id = ?'
     db.query(sql, [userId], (err, response) => {
         if (err) {
+            console.log("findById error: ", err);
             result(err, null);
-        } else {
-            result(null, response);
+            return;
         }
+        if (response.length) {
+            console.log("found user: ", response[0]);
+            result(null, response[0]);
+            return;
+        }
+        // not found user with the id
+        result({ kind: "not_found" }, null);
     })
 }
 User.findEmail = function (email, result) {
     let sql = 'SELECT * FROM rc_users WHERE email = ?'
     db.query(sql, [email], (err, response) => {
         if (err) {
+            console.log("findEmail error: ", err);
             result(err, null);
-        } else {
-            result(null, response);
+            return;
         }
+        if (response.length) {
+            console.log("found email: ", response[0]);
+            result(null, response[0]);
+            return;
+        }
+        result({ kind: "not_found" }, null);
     })
 }
 User.findNickname = function (nickName, result) {
@@ -58,35 +91,40 @@ User.findNickname = function (nickName, result) {
         }
     })
 }
-User.updateUserById = function (userId, user, result) {
+User.updateById = function (userId, user, result) {
     let sql = 'UPDATE rc_users SET ? WHERE user_id = ?'
     db.query(sql, [user, userId], (err, response) => {
         if (err) {
-            result(err, null);
-        } else {
-            result(null, response);
+            console.log("updateById error: ", err);
+            result(null, err);
+            return;
         }
+        if (response.affectedRows == 0) {
+            // not found user with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("updated user: ", { user_id: userId, ...user });
+        result(null, { user_id: userId, ...user });
     })
 }
-User.createUser = function (user, result) {
-    let sql = 'INSERT INTO rc_users SET ?'
-    db.query(sql, [user], (err, response) => {
-        console.log("object", err, response);
-        if (err) {
-            result(err, null);
-        } else {
-            result(null, response);
-        }
-    })
-}
-User.removeUser = function (userId, result) {
+User.remove = function (userId, result) {
     let sql = 'DELETE FROM rc_users WHERE user_id = ?';
     db.query(sql, [userId], (err, response) => {
         if (err) {
+            console.log("remove error: ", err);
             result(null, err);
-        } else {
-            result(null, response);
+            return;
         }
+        if (response.affectedRows == 0) {
+            // not found user with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+        console.log("deleted user with id: ", userId);
+        result(null, response);
     })
 }
+
 module.exports = User;

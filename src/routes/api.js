@@ -1,13 +1,13 @@
 /**
- * Created by trungquandev.com's author on 16/10/2019.
- * src/routes/api.js
+ * @Created by MinJa 
+ * on 05/03/2020.
  */
+
 const express = require("express");
 const router = express.Router();
 const AuthMiddleWare = require("../middleware/AuthMiddleware");
 const AuthController = require("../controllers/AuthController");
 const ValidateController = require("../controllers/ValidateController");
-const ProductsController = require("../controllers/ProductsController");
 const UsersController = require("../controllers/UsersController");
 const CompanysController = require("../controllers/CompanysController");
 const ProvincesController = require("../controllers/ProvincesController");
@@ -24,42 +24,31 @@ let initAPIs = (app) => {
     // Register
     router.post("/api/auth/register",
         ValidateController.validate('createUser'),
-        UsersController.createUser
+        UsersController.create
     );
     // Province
-    router.get("/api/province", ProvincesController.provinceLists);
+    router.get("/api/province", ProvincesController.findAll);
     // Job
-    router.get("/api/job-type", JobsController.JobLists);
+    router.get("/api/job-type", JobsController.findAll);
     // Companys
-    router.get("/api/company", CompanysController.companyLists);
-    router.post("/api/company", CompanysController.createCompany);
-    router.get("/api/company/:companyId", CompanysController.companyDetail);
-    router.put("/api/company/:companyId", CompanysController.updateCompanyInfo);
-    router.delete("/api/company/:companyId", CompanysController.deleteCompany);
-
-
-    // User authMiddleware.isAuth before api need Auth
-    router.use(AuthMiddleWare.isAuth);
+    router.get("/api/company", CompanysController.findAll);
+    router.post("/api/company", CompanysController.create);
+    router.get("/api/company/:companyId", CompanysController.findOne);
+    router.put("/api/company/:companyId", CompanysController.update);
+    router.delete("/api/company/:companyId", CompanysController.remove);
 
     // Users
     router.get("/api/me/profile", UsersController.getUserInfo);
-    router.post("/api/me/update", UsersController.updateUserInfo);
+    router.post("/api/me/update", UsersController.update);
 
-    router.get("/api/users", UsersController.userLists);
-    router.post("/api/users", UsersController.createUser);
-    router.get("/api/users/:userId", UsersController.userDetail);
-    router.put("/api/users/:userId", UsersController.updateUserInfo);
-    router.delete("/api/users/:userId", UsersController.deleteUser);
+    router.get("/api/users", UsersController.findAll);
+    router.post("/api/users", UsersController.create);
+    router.get("/api/users/:userId", UsersController.findOne);
+    router.put("/api/users/:userId", UsersController.update);
+    router.delete("/api/users/:userId", UsersController.remove);
 
-
-
-    // Products
-    router.get("/api/products", ProductsController.productLists);
-    router.post("/api/products", ProductsController.createProduct);
-    router.get("/api/products/:productId", ProductsController.productDetail);
-    router.put("/api/products/:productId", ProductsController.updateProduct);
-    router.delete("/api/products/:productId", ProductsController.deleteProduct);
-
+    // User authMiddleware.isAuth before api need Auth
+    router.use(AuthMiddleWare.isAuth);
 
     return app.use("/", router);
 }

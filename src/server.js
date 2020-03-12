@@ -16,13 +16,12 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions))
-
-const bodyParser = require('body-parser')
 require('dotenv').config()
 const port = process.env.PORT || 3001
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true })) // parse requests of content-type: application/x-www-form-urlencoded
+app.use(bodyParser.json()) // parse requests of content-type: application/json
 app.use(expressValidator())
 
 let routes = require('./routes/api') //importing route
