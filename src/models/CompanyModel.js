@@ -23,8 +23,7 @@ Company.getAllCompany = function (result) {
     db.query(sql, (err, response) => {
         if (err) {
             result(null, err);
-        }
-        else {
+        } else {
             result(null, response);
         }
     })
@@ -34,8 +33,7 @@ Company.getCompanyById = function (companyId, result) {
     db.query(sql, [companyId], (err, response) => {
         if (err) {
             result(err, null);
-        }
-        else {
+        } else {
             result(null, response);
         }
     })
@@ -45,8 +43,7 @@ Company.updateCompanyById = function (companyId, company, result) {
     db.query(sql, [company, companyId], (err, response) => {
         if (err) {
             result(err, null);
-        }
-        else {
+        } else {
             result(null, response);
         }
     })
@@ -56,9 +53,7 @@ Company.createCompany = function (company, result) {
     db.query(sql, [company], (err, response) => {
         if (err) {
             result(err, null);
-        }
-        else {
-            console.log(response);
+        } else {
             result(null, response.company_id);
         }
     })

@@ -71,10 +71,11 @@ User.updateUserById = function (userId, user, result) {
 User.createUser = function (user, result) {
     let sql = 'INSERT INTO rc_users SET ?'
     db.query(sql, [user], (err, response) => {
+        console.log("object", err, response);
         if (err) {
             result(err, null);
         } else {
-            result(null, response.user_id);
+            result(null, response);
         }
     })
 }

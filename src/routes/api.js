@@ -22,8 +22,7 @@ let initAPIs = (app) => {
     // Refresh Token
     router.post("/api/auth/refresh-token", AuthController.refreshToken);
     // Register
-    router.post(
-        "/api/register",
+    router.post("/api/auth/register",
         ValidateController.validate('createUser'),
         UsersController.createUser
     );
