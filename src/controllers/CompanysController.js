@@ -31,17 +31,16 @@ let create = (req, result) => {
 
 // Retrieve all companys from the database.
 let findAll = (req, result) => {
-    // {
-    //     "code": 0,
-    //     "message": "",
-    //     "error": "",
-    //     "data": response
-    // }
     Company.getAll((err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || "Internal Server Error." });
         }
-        else result.send(res);
+        else result.send({
+            "code": 0,
+            "message": "",
+            "error": "",
+            "data": res
+        });
     })
 }
 

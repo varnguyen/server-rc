@@ -26,7 +26,6 @@ const User = function (user) {
 User.create = function (user, result) {
     let sql = 'INSERT INTO rc_users SET ?'
     db.query(sql, [user], (err, response) => {
-        console.log("object", err, response);
         if (err) {
             console.log("createUser error: ", err);
             result(err, null);
@@ -44,7 +43,6 @@ User.getAll = function (result) {
             result(null, err);
             return;
         }
-        console.log("users: ", response);
         result(null, response);
     })
 }

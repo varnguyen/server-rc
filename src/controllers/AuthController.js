@@ -31,7 +31,11 @@ let login = async (req, res) => {
         User.findEmail(email, (err, response) => {
             if (err) {
                 if (err.kind === "not_found") {
-                    res.status(404).send({ message: "Email does not exits." });
+                    res.status(200).send({
+                        code: 3,
+                        message: "Email does not exits.",
+                        data: ""
+                    });
                 } else {
                     res.status(500).send({ message: "Error on the server." });
                 }
@@ -49,7 +53,11 @@ let login = async (req, res) => {
                     }
                     processLoginSuccess()
                 } else {
-                    res.status(401).send({ message: "Email or password is incorrect." });
+                    res.status(200).send({
+                        code: 4,
+                        message: "Email or password is incorrect.",
+                        data: ""
+                    });
                 }
             }
         })

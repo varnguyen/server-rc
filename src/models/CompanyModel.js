@@ -44,7 +44,6 @@ Company.getAll = function (result) {
             result(null, err);
             return;
         }
-        console.log("companys: ", response);
         result(null, response);
     })
 }

@@ -172,19 +172,16 @@ let getUserInfo = async (req, result) => {
     const userId = decoded.data.user_id;
     User.findById(userId, (err, res) => {
         if (err) {
-            console.log(err);
-            result.sendStatus(500);
-            return;
-        }
-        if (res.length > 0) {
-            return result.status(200).json({
-                "code": 0,
-                "message": "",
-                "error": "",
-                "data": res[0]
-            })
-        }
-        return result.status(201).json({ message: 'User Not Found!' })
+            if (err.kind === "not_found") {
+                result.status(200).send({ message: "User Not Found!" });
+            } else {
+                result.status(500).send({ message: "Error retrieving user with id " + userId });
+            }
+        } else result.status(200).send({
+            "code": 0,
+            "message": "",
+            "data": res
+        });
     })
 }
 
