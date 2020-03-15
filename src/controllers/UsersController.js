@@ -5,32 +5,76 @@
 
 'use strict'
 
-const User = require("../models/UserModel");
-const jwtHelper = require("../helpers/jwt.helper");
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit";
-const { validationResult } = require('express-validator/check');
-const db = require('../database/db');
+const bcrypt = require('bcrypt');
+const { BCRYPT_SALT_ROUNDS } = require("../@config/key")
+const User = require("../models/UserModel")
+const jwtHelper = require("../helpers/jwt.helper")
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit"
+const { validationResult } = require('express-validator/check')
+const { INTERNAL_SERVER_ERROR, EMAIL_REGISTER, NICK_NAME_REGISTER, DELETE_SUCCESS, CONTENT_CAN_NOT_EMPTY } = require("../helpers/error-msg")
 
 // Create and save a new user
 let create = (req, result) => {
     // Validate request
     if (!req.body) {
-        result.status(400).send({ message: "Content can not be empty!" });
+        result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
-    const { nick_name, email, password, gender } = req.body
+    const { nick_name, email, password, gender } = req.body;
     // Create a Customer
     const user = new User({ nick_name, email, password, gender });
-    console.log("user", user);
+    const hash = bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
+    user.password = hash;
 
-    // Save Customer in the database
-    User.create(user, (err, res) => {
-        console.log("err, data", err, res);
+    User.findNickname(nick_name, (err, res) => {
         if (err) {
-            result.status(500).send({ message: err.message || "Internal Server Error." });
+            if (err.kind === "not_found") {
+                User.findEmail(email, (err, res) => {
+                    if (err) {
+                        if (err.kind === "not_found") {
+                            // Save Customer in the database
+                            User.create(user, (err, res) => {
+                                if (err) {
+                                    result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
+                                }
+                                else result.send({
+                                    code: 0,
+                                    message: "",
+                                    data: res
+                                });
+                            });
+                        } else {
+                            result.status(500).send({ message: INTERNAL_SERVER_ERROR });
+                        }
+                    } else result.status(200).send({
+                        code: 2,
+                        message: EMAIL_REGISTER,
+                        data: ""
+                    });
+
+                })
+            } else {
+                result.status(500).send({ message: INTERNAL_SERVER_ERROR });
+            }
         }
-        // res.status(500).json({ message: 'Internal Server Error.' });
-        else result.send(res);
-    });
+        else result.status(200).send({
+            code: 4,
+            message: NICK_NAME_REGISTER,
+            data: ""
+        });
+    })
+
+
+    // // Save Customer in the database
+    // User.create(user, (err, res) => {
+    //     if (err) {
+    //         result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
+    //     }
+    //     else result.send({
+    //         code: 0,
+    //         message: "",
+    //         data: res
+    //     });
+    // });
 
     return;
 
@@ -144,7 +188,7 @@ let create = (req, result) => {
 let findAll = (req, result) => {
     User.getAll((err, res) => {
         if (err) {
-            result.status(500).send({ message: err.message || "Internal Server Error." });
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
         else result.send(res);
     })
@@ -178,9 +222,9 @@ let getUserInfo = async (req, result) => {
                 result.status(500).send({ message: "Error retrieving user with id " + userId });
             }
         } else result.status(200).send({
-            "code": 0,
-            "message": "",
-            "data": res
+            code: 0,
+            message: "",
+            data: res
         });
     })
 }
@@ -189,7 +233,7 @@ let getUserInfo = async (req, result) => {
 let update = (req, result) => {
     // Validate Request
     if (!req.body) {
-        result.status(400).send({ message: "Content can not be empty!" });
+        result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
     let data = req.body;
     let userId = data.user_id;
@@ -216,15 +260,15 @@ const remove = (req, result) => {
                 result.status(500).send({ message: "Could not delete user with id " + userId });
             }
         }
-        else result.send({ message: `User was deleted successfully!` });
+        else result.send({ message: DELETE_SUCCESS });
     })
 }
 
 module.exports = {
-    getUserInfo: getUserInfo,
+    create: create,
     findAll: findAll,
     findOne: findOne,
+    getUserInfo: getUserInfo,
     update: update,
-    create: create,
-    remove: remove
+    remove: remove,
 }

@@ -5,13 +5,14 @@
 
 'use strict'
 
-const Company = require('../models/CompanyModel');
+const Company = require("../models/CompanyModel");
+const { INTERNAL_SERVER_ERROR, INSERT_SUCCESS, DELETE_SUCCESS, CONTENT_CAN_NOT_EMPTY } = require("../helpers/error-msg");
 
 // Create and save a new company
 let create = (req, result) => {
     // Validate request
     if (!req.body) {
-        result.status(400).send({ message: "Content can not be empty!" });
+        result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
 
     // Create a company
@@ -23,23 +24,24 @@ let create = (req, result) => {
     Company.create(company, (err, res) => {
         console.log("err, data", err, res);
         if (err) {
-            result.status(500).send({ message: err.message || "Internal Server Error." });
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
-        else result.send({ res, message: 'Insert success!' });
+        else result.send({ res, message: INSERT_SUCCESS });
     });
 }
 
 // Retrieve all companys from the database.
 let findAll = (req, result) => {
-    Company.getAll((err, res) => {
+    var queryData = req.query;
+    console.log("object", req.body);
+    Company.getAll(queryData, (err, res) => {
         if (err) {
-            result.status(500).send({ message: err.message || "Internal Server Error." });
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
         else result.send({
-            "code": 0,
-            "message": "",
-            "error": "",
-            "data": res
+            code: 0,
+            message: "",
+            data: res
         });
     })
 }
@@ -55,7 +57,11 @@ let findOne = (req, result) => {
                 result.status(500).send({ message: "Error retrieving company with id " + companyId });
             }
         }
-        else result.send(res);
+        else result.send({
+            code: 0,
+            message: "",
+            data: res
+        });
     })
 }
 
@@ -63,7 +69,7 @@ let findOne = (req, result) => {
 let update = (req, result) => {
     // Validate Request
     if (!req.body) {
-        result.status(400).send({ message: "Content can not be empty!" });
+        result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
     let data = req.body;
     let companyId = data.company_id;
@@ -92,14 +98,14 @@ let remove = (req, result) => {
                 result.status(500).send({ message: "Could not delete company with id " + companyId });
             }
         }
-        else result.send({ message: `Company was deleted successfully!` });
+        else result.send({ message: DELETE_SUCCESS });
     })
 }
 
 module.exports = {
+    create: create,
     findAll: findAll,
     findOne: findOne,
     update: update,
-    create: create,
-    remove: remove
+    remove: remove,
 }

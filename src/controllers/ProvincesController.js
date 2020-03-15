@@ -6,17 +6,17 @@
 'use strict'
 
 const Province = require("../models/ProvinceModel");
+const { INTERNAL_SERVER_ERROR } = require("../helpers/error-msg");
 
 // Retrieve all users from the database.
 let findAll = (req, result) => {
     Province.getAll((err, res) => {
         if (err) {
-            result.status(500).send({ message: err.message || "Internal Server Error." });
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         } else result.send({
-            "code": 0,
-            "message": "",
-            "error": "",
-            "data": res
+            code: 0,
+            message: "",
+            data: res
         });
     })
 }

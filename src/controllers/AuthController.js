@@ -3,10 +3,11 @@
  * on 05/03/2020.
  */
 
-const User = require('../models/UserModel')
-
+const bcrypt = require('bcrypt');
+const User = require('../models/UserModel');
 const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
+
 // Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
 let tokenList = {};
@@ -18,6 +19,7 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secre
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-min-ja-hammer@bit";
+const { INTERNAL_SERVER_ERROR, LOGIN_SUCCESS, EMAIL_NOT_EXITS, EMAIL_OR_PASS_INCORRECT } = require("../helpers/error-msg");
 /**
  * controller login
  * @param {*} req 
@@ -33,29 +35,30 @@ let login = async (req, res) => {
                 if (err.kind === "not_found") {
                     res.status(200).send({
                         code: 3,
-                        message: "Email does not exits.",
+                        message: EMAIL_NOT_EXITS,
                         data: ""
                     });
                 } else {
-                    res.status(500).send({ message: "Error on the server." });
+                    res.status(500).send({ message: INTERNAL_SERVER_ERROR });
                 }
             } else {
-                if (response.password == password) {
+                if (bcrypt.compareSync(password, response.password)) {
+                    // Passwords match
                     processLoginSuccess = async () => {
                         const accessToken = await jwtHelper.generateToken(response, accessTokenSecret, accessTokenLife);
+                        response.token = accessToken
                         res.send({
-                            "code": 0,
-                            "message": "Login success.",
-                            "data": {
-                                "token": accessToken
-                            }
+                            code: 0,
+                            message: LOGIN_SUCCESS,
+                            data: response
                         });
                     }
                     processLoginSuccess()
                 } else {
+                    // Passwords don't match
                     res.status(200).send({
-                        code: 4,
-                        message: "Email or password is incorrect.",
+                        code: 5,
+                        message: EMAIL_OR_PASS_INCORRECT,
                         data: ""
                     });
                 }

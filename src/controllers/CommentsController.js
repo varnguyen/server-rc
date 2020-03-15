@@ -5,10 +5,10 @@
 
 'use strict'
 
-const Job = require("../models/JobModel");
+const Comment = require("../models/CommentModel");
 const { INTERNAL_SERVER_ERROR } = require("../helpers/error-msg");
 
-// Create and save 
+// Create and save
 let create = (req, result) => {
     // Validate request
     if (!req.body) {
@@ -16,11 +16,11 @@ let create = (req, result) => {
     }
 
     // Get data from body
-    const { nick_name, email, password, gender } = req.body
-    const job = new Compnay({ nick_name, email, password, gender });
+    const { user_id, company_id, comment, deleted } = req.body
+    const obj_comment = new Compnay({ user_id, company_id, comment, deleted });
 
     // Save in database
-    Job.create(job, (err, res) => {
+    Comment.create(obj_comment, (err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
@@ -30,7 +30,7 @@ let create = (req, result) => {
 
 // Retrieve all from the database.
 let findAll = (req, result) => {
-    Job.getAll((err, res) => {
+    Comment.getAll((err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         } else result.send({
@@ -43,13 +43,13 @@ let findAll = (req, result) => {
 
 // Find a single with a ID
 let findOne = (req, result) => {
-    let jobId = req.params.jobId;
-    Job.findById(jobId, (err, res) => {
+    let commentId = req.params.commentId;
+    Comment.findById(commentId, (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
-                result.status(404).send({ message: `Not found job with id ${jobId}.` });
+                result.status(404).send({ message: `Not found comment with id ${commentId}.` });
             } else {
-                result.status(500).send({ message: "Error retrieving job with id " + jobId });
+                result.status(500).send({ message: "Error retrieving comment with id " + commentId });
             }
         }
         else result.send({
@@ -67,15 +67,13 @@ let update = (req, result) => {
         result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
     let data = req.body;
-    let jobId = data.job_id;
-    // let data = req.body;
-    // let jobId = req.params.jobId;
-    Job.updateById(jobId, new Job(data), (err, res) => {
+    let cmtId = data.cmt_id;
+    Comment.updateById(cmtId, new Comment(data), (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
-                result.status(404).send({ message: `Not found job with id ${jobId}.` });
+                result.status(404).send({ message: `Not found comment with id ${cmtId}.` });
             } else {
-                result.status(500).send({ message: "Error updating job with id " + jobId });
+                result.status(500).send({ message: "Error updating comment with id " + cmtId });
             }
         } else result.send(res);
     });
@@ -83,13 +81,13 @@ let update = (req, result) => {
 
 // Delete by ID
 let remove = (req, result) => {
-    let jobId = req.params.jobId;
-    Job.remove(jobId, (err, res) => {
+    let cmtId = req.params.cmtId;
+    Comment.remove(cmtId, (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
-                result.status(404).send({ message: `Not found job with id ${jobId}.` });
+                result.status(404).send({ message: `Not found comment with id ${cmtId}.` });
             } else {
-                result.status(500).send({ message: "Could not delete job with id " + jobId });
+                result.status(500).send({ message: "Could not delete comment with id " + cmtId });
             }
         }
         else result.send({ message: DELETE_SUCCESS });

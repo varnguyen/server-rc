@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // parse requests of content-
 app.use(bodyParser.json()) // parse requests of content-type: application/json
 app.use(expressValidator())
 
+
 let routes = require('./routes/api') //importing route
 routes(app)
 
@@ -32,5 +33,6 @@ app.use(function (req, res) {
 })
 
 app.listen(port)
-
 console.log('RESTful API server started on: ' + port)
+
+

@@ -6,6 +6,8 @@
 const jwtHelper = require("../helpers/jwt.helper");
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit";
+const { UNAUTHORIZED, NO_TOKEN_PROVIDED } = require("../helpers/error-msg");
+
 /**
  * Middleware: Authorization user by Token
  * @param {*} req 
@@ -37,13 +39,13 @@ let isAuth = async (req, res, next) => {
             // Nếu giải mã gặp lỗi: Không đúng, hết hạn...etc:
             // Lưu ý trong dự án thực tế hãy bỏ dòng debug bên dưới, mình để đây để debug lỗi cho các bạn xem thôi
             return res.status(401).json({
-                message: 'Unauthorized.',
+                message: UNAUTHORIZED,
             });
         }
     } else {
         // Không tìm thấy token trong request
         return res.status(403).send({
-            message: 'No token provided.',
+            message: NO_TOKEN_PROVIDED,
         });
     }
 }

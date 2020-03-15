@@ -12,52 +12,42 @@ const UsersController = require("../controllers/UsersController");
 const CompanysController = require("../controllers/CompanysController");
 const ProvincesController = require("../controllers/ProvincesController");
 const JobsController = require("../controllers/JobsController");
-const CommentsController = require("../controllers/CommentsController");
 
 /**
  * Init all APIs on your application
  * @param {*} app from express
  */
+
 let initAPIs = (app) => {
     // Login
     router.post("/api/auth/login", AuthController.login);
+
     // Refresh Token
     router.post("/api/auth/refresh-token", AuthController.refreshToken);
+
     // Register
     router.post("/api/auth/register",
         ValidateController.validate('createUser'),
         UsersController.create
     );
+
     // Province
     router.get("/api/province", ProvincesController.findAll);
+
     // Job
     router.get("/api/job-type", JobsController.findAll);
+
     // Companys
     router.get("/api/company", CompanysController.findAll);
     router.post("/api/company", CompanysController.create);
     router.get("/api/company/:companyId", CompanysController.findOne);
-    router.put("/api/company/:companyId", CompanysController.update);
-    router.delete("/api/company/:companyId", CompanysController.remove);
 
-    // Comment
-    router.get("/api/comment", CommentsController.findAll);
-    router.post("/api/comment", CommentsController.create);
-    router.get("/api/comment/:commentId", CommentsController.findOne);
-    router.put("/api/comment/:commentId", CommentsController.update);
-    router.delete("/api/comment/:commentId", CommentsController.remove);
+    // User authMiddleware.isAuth before api need Auth
+    router.use(AuthMiddleWare.isAuth);
 
     // Users
     router.get("/api/me/profile", UsersController.getUserInfo);
     router.post("/api/me/update", UsersController.update);
-
-    router.get("/api/users", UsersController.findAll);
-    router.post("/api/users", UsersController.create);
-    router.get("/api/users/:userId", UsersController.findOne);
-    router.put("/api/users/:userId", UsersController.update);
-    router.delete("/api/users/:userId", UsersController.remove);
-
-    // User authMiddleware.isAuth before api need Auth
-    router.use(AuthMiddleWare.isAuth);
 
     return app.use("/", router);
 }

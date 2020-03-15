@@ -27,7 +27,6 @@ User.create = function (user, result) {
     let sql = 'INSERT INTO rc_users SET ?'
     db.query(sql, [user], (err, response) => {
         if (err) {
-            console.log("createUser error: ", err);
             result(err, null);
             return;
         } else {
@@ -39,7 +38,6 @@ User.getAll = function (result) {
     let sql = 'SELECT * FROM rc_users'
     db.query(sql, (err, response) => {
         if (err) {
-            console.log("getAll error: ", err);
             result(null, err);
             return;
         }
@@ -50,12 +48,10 @@ User.findById = function (userId, result) {
     let sql = 'SELECT * FROM rc_users WHERE user_id = ?'
     db.query(sql, [userId], (err, response) => {
         if (err) {
-            console.log("findById error: ", err);
             result(err, null);
             return;
         }
         if (response.length) {
-            console.log("found user: ", response[0]);
             result(null, response[0]);
             return;
         }
@@ -67,12 +63,10 @@ User.findEmail = function (email, result) {
     let sql = 'SELECT * FROM rc_users WHERE email = ?'
     db.query(sql, [email], (err, response) => {
         if (err) {
-            console.log("findEmail error: ", err);
             result(err, null);
             return;
         }
         if (response.length) {
-            console.log("found email: ", response[0]);
             result(null, response[0]);
             return;
         }
@@ -84,16 +78,19 @@ User.findNickname = function (nickName, result) {
     db.query(sql, [nickName], (err, response) => {
         if (err) {
             result(err, null);
-        } else {
-            result(null, response);
+            return;
         }
+        if (response.length) {
+            result(null, response[0]);
+            return;
+        }
+        result({ kind: "not_found" }, null);
     })
 }
 User.updateById = function (userId, user, result) {
     let sql = 'UPDATE rc_users SET ? WHERE user_id = ?'
     db.query(sql, [user, userId], (err, response) => {
         if (err) {
-            console.log("updateById error: ", err);
             result(null, err);
             return;
         }
@@ -102,8 +99,6 @@ User.updateById = function (userId, user, result) {
             result({ kind: "not_found" }, null);
             return;
         }
-
-        console.log("updated user: ", { user_id: userId, ...user });
         result(null, { user_id: userId, ...user });
     })
 }
@@ -111,7 +106,6 @@ User.remove = function (userId, result) {
     let sql = 'DELETE FROM rc_users WHERE user_id = ?';
     db.query(sql, [userId], (err, response) => {
         if (err) {
-            console.log("remove error: ", err);
             result(null, err);
             return;
         }
@@ -120,7 +114,6 @@ User.remove = function (userId, result) {
             result({ kind: "not_found" }, null);
             return;
         }
-        console.log("deleted user with id: ", userId);
         result(null, response);
     })
 }
