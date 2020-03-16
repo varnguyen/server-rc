@@ -35,9 +35,33 @@ Company.create = function (company, result) {
     })
 }
 Company.getAll = function (queryData, result) {
-    console.log("1", queryData);
-    // return;
-    let sql = 'SELECT * FROM rc_companys';
+    console.log("query: ", queryData);
+    const { page, row, job_id, province_id, company_name } = queryData
+    // queryData.page = parseInt(queryData.page)
+    // queryData.row = parseInt(queryData.row)
+    // queryData.job_id = parseInt(queryData.job_id)
+    // queryData.province_id = parseInt(queryData.province_id)
+    const limit = (page - 1) * row + ',' + row;
+    const pageNumber = (page - 1) * row;
+    const pageSize = row
+
+    let sql = "SELECT * FROM rc_companys";
+    // if (job_id) {
+    //     sql += ` WHERE job_id = ${job_id}`;
+    // }
+    // if (province_id) {
+    //     sql += ` AND province_id = ${province_id}`;
+    // }
+    // if (company_name) {
+    //     sql += ` AND company_name = ${province_id}`;
+    // }
+    if (page && row) {
+        sql += ` LIMIT ${limit}`;
+    }
+
+
+    console.log(sql)
+
     db.query(sql, (err, response) => {
         if (err) {
             result(null, err);
