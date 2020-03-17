@@ -35,7 +35,7 @@ app.use(function (req, res) {
 app.listen(port)
 console.log('RESTful API server started on: ' + port)
 
-// const bcrypt = require("bcrypt");
-// console.log(bcrypt.hashSync('123456', 10));
+const bcrypt = require("bcrypt");
+console.log(bcrypt.hashSync('123456', 10));
 
 

@@ -14,11 +14,10 @@ const User = function (user) {
     this.last_name = user.last_name;
     this.email = user.email;
     this.phone = user.phone;
-    this.password = user.password;
     this.description = user.description;
-    this.birthday = user.birthday;
-    this.active = user.active ? user.active : 1;
-    this.deleted = user.deleted;
+    this.birthday = user.birthday ? new Date(user.birthday) : null;
+    this.active = 1;
+    this.address = user.address;
     this.date_add = user.date_add ? user.date_add : new Date();
     this.date_upd = new Date();
 }
@@ -89,6 +88,7 @@ User.findNickname = function (nickName, result) {
 }
 User.updateById = function (userId, user, result) {
     let sql = 'UPDATE rc_users SET ? WHERE user_id = ?'
+    console.log("user", user)
     db.query(sql, [user, userId], (err, response) => {
         if (err) {
             result(null, err);

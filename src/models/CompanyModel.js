@@ -8,19 +8,16 @@
 const db = require("../database/db");
 
 const Company = function (company) {
-    // this.gender = company.gender;
-    // this.fake_name = company.fake_name;
-    // this.first_name = company.first_name;
-    // this.last_name = company.last_name;
-    // this.email = company.email;
-    // this.phone = company.phone;
-    // this.passwd = company.passwd;
-    // this.description = company.description;
-    // this.birthday = company.birthday;
-    // this.active = company.active;
-    // this.deleted = company.deleted;
-    // this.date_add = new Date();
-    // this.date_upd = new Date();
+    this.full_name = company.full_name;
+    this.email = company.email;
+    this.phone = company.phone;
+    this.job_id = company.job_id;
+    this.province_id = company.province_id;
+    this.address = company.address;
+    this.member_total = company.member_total;
+    this.website = company.website;
+    this.date_add = new Date();
+    this.short_name = company.short_name;
 }
 
 Company.create = function (company, result) {

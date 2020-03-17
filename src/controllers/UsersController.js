@@ -9,9 +9,9 @@ const bcrypt = require('bcrypt');
 const { BCRYPT_SALT_ROUNDS } = require("../@config/key")
 const User = require("../models/UserModel")
 const jwtHelper = require("../helpers/jwt.helper")
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit"
-const { validationResult } = require('express-validator/check')
-const { INTERNAL_SERVER_ERROR, EMAIL_REGISTER, NICK_NAME_REGISTER, DELETE_SUCCESS, CONTENT_CAN_NOT_EMPTY } = require("../helpers/error-msg")
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-min-ja-hammer@bit";
+const { validationResult } = require("express-validator/check");
+const { INTERNAL_SERVER_ERROR, EMAIL_REGISTER, NICK_NAME_REGISTER, UPDATE_SUCCESS, DELETE_SUCCESS, CONTENT_CAN_NOT_EMPTY } = require("../helpers/error-msg")
 
 // Create and save a new user
 let create = (req, result) => {
@@ -230,23 +230,49 @@ let getUserInfo = async (req, result) => {
 }
 
 // Update a user identified by the userId in the request
-let update = (req, result) => {
+let update = async (req, result) => {
     // Validate Request
     if (!req.body) {
         result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
-    let data = req.body;
-    let userId = data.user_id;
-    User.updateById(userId, new User(data), (err, res) => {
+
+    const tokenFromClient = req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["authorization"];
+    const decoded = await jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
+    let user = req.body;
+    const userId = decoded.data.user_id;
+    User.updateById(userId, new User(user), (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 result.status(404).send({ message: `Not found user with id ${userId}.` });
             } else {
                 result.status(500).send({ message: "Error updating user with id " + userId });
             }
-        } else result.send(res);
+        } else result.send({
+            code: 0,
+            message: UPDATE_SUCCESS,
+            data: res
+        });
     });
 }
+
+// // Update a user identified by the userId in the request
+// let update = (req, result) => {
+//     // Validate Request
+//     if (!req.body) {
+//         result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
+//     }
+//     let data = req.body;
+//     let userId = data.user_id;
+//     User.updateById(userId, new User(data), (err, res) => {
+//         if (err) {
+//             if (err.kind === "not_found") {
+//                 result.status(404).send({ message: `Not found user with id ${userId}.` });
+//             } else {
+//                 result.status(500).send({ message: "Error updating user with id " + userId });
+//             }
+//         } else result.send(res);
+//     });
+// }
 
 // Delete a user with the specified userId in the request
 const remove = (req, result) => {

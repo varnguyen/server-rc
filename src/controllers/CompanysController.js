@@ -16,17 +16,18 @@ let create = (req, result) => {
     }
 
     // Create a company
-    const { nick_name, email, password, gender } = req.body
-    const company = new Compnay({ nick_name, email, password, gender });
-    console.log("company", company);
+    const company = req.body
 
     // Save company in the database
-    Company.create(company, (err, res) => {
-        console.log("err, data", err, res);
+    Company.create(new Company(company), (err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
-        else result.send({ res, message: INSERT_SUCCESS });
+        else result.send({
+            code: 0,
+            message: INSERT_SUCCESS,
+            data: ""
+        });
     });
 }
 
