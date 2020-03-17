@@ -47,9 +47,6 @@ let initAPIs = (app) => {
     router.delete("/api/comment/:commentId", CommentsController.remove);
 
     // Users
-    router.get("/api/me/profile", UsersController.getUserInfo);
-    router.post("/api/me/update", UsersController.update);
-
     router.get("/api/users", UsersController.findAll);
     router.post("/api/users", UsersController.create);
     router.get("/api/users/:userId", UsersController.findOne);
@@ -58,6 +55,10 @@ let initAPIs = (app) => {
 
     // User authMiddleware.isAuth before api need Auth
     router.use(AuthMiddleWare.isAuth);
+
+    // ProfileÏ
+    router.get("/api/me/profile", UsersController.getUserInfo);
+    router.post("/api/me/update", UsersController.update);
 
     return app.use("/", router);
 }
