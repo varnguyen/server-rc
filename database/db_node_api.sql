@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-12 23:07:18.0040
+-- Generation Time: 2020-03-17 23:17:24.6240
 -- -------------------------------------------------------------
 
 
@@ -18,30 +18,44 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
+CREATE TABLE `rc_comments` (
+  `cmt_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `deleted` int(11) DEFAULT NULL,
+  `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`cmt_id`),
+  UNIQUE KEY `cmt_id` (`cmt_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
 CREATE TABLE `rc_companys` (
   `address` varchar(255) DEFAULT NULL,
   `company_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) NOT NULL,
-  `member_total` int(11) NOT NULL DEFAULT '0',
+  `member_total` varchar(50) NOT NULL DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `job_id` int(11) DEFAULT '-1',
-  `province_id` int(11) DEFAULT '-1',
+  `job_id` int(11) NOT NULL DEFAULT '1',
+  `province_id` int(11) NOT NULL DEFAULT '1',
   `short_name` varchar(255) DEFAULT NULL,
   `active` int(11) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
+  `website` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`company_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_jobs` (
   `job_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_name` varchar(255) NOT NULL,
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `active` int(11) DEFAULT '1',
   PRIMARY KEY (`job_id`),
   UNIQUE KEY `job_id` (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_provinces` (
   `province_id` bigint(20) unsigned NOT NULL,
@@ -56,12 +70,12 @@ CREATE TABLE `rc_provinces` (
 CREATE TABLE `rc_users` (
   `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `gender` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
-  `nick_name` varchar(100) DEFAULT NULL,
+  `nick_name` varchar(100) NOT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(64) DEFAULT NULL,
-  `password` varchar(512) NOT NULL,
+  `password` varchar(512) DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` date DEFAULT NULL,
   `active` tinyint(3) unsigned DEFAULT '1',
@@ -74,24 +88,116 @@ CREATE TABLE `rc_users` (
   KEY `customer_login` (`email`,`password`(255)) USING BTREE,
   KEY `id_customer_passwd` (`user_id`,`password`(255)) USING BTREE,
   KEY `id_gender` (`gender`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`, `active`, `email`, `phone`) VALUES
-('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Cổ phẩn công nghệ GVN Technology', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'xxx', '1', 'gvn-techno@gmail.com', '0123456789'),
-('201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '2', 'Công ty TNHH Thiên ngọc Minh Uy', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ccc', '1', '', ''),
-('202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '3', 'Công ty Cổ phần đầu tư và phát triển', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd', '1', '', ''),
-('203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '4', 'Công ty Công nghệ VNext', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'aaa', '1', '', ''),
-('204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '5', 'Công ty Xây dựng', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'ddd', '1', '', ''),
-('205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '6', 'Công ty Bất động sản HQV', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'sss', '1', '', ''),
-('206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '7', 'Binh đoàn 789 HQV', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'zzz', '1', '', ''),
-('207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '8', 'NavaTech tầng 8 Hoàng Quốc Việt', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'nnn', '1', '', ''),
-('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '9', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', NULL, NULL, 'mmm', '1', '', '');
+INSERT INTO `rc_comments` (`cmt_id`, `company_id`, `comment`, `deleted`, `date_add`, `date_upd`, `user_id`) VALUES
+('1', '1', 'xxxx', '0', '2020-03-14 22:46:11', '2020-03-14 22:46:11', '81'),
+('2', '1', 'yyy', '0', '2020-03-14 22:46:44', '2020-03-14 22:46:44', '82');
 
-INSERT INTO `rc_jobs` (`job_id`, `job_name`, `date_add`, `date_upd`) VALUES
-('1', 'Công nghệ thông tin', '2020-03-08 21:06:20', '2020-03-08 21:06:20'),
-('2', 'Y tế', '2020-03-08 21:07:03', '2020-03-08 21:07:03'),
-('3', 'Viễn thông', '2020-03-08 21:07:03', '2020-03-08 21:07:03'),
-('4', 'Giáo dục', '2020-03-08 21:07:03', '2020-03-08 21:07:03');
+INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`, `active`, `email`, `phone`, `website`) VALUES
+('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Re-Com', '100', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '1', '1', 'xxx', '0', 'gvn-techno@gmail.com', '0123456789', NULL),
+('201 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '2', 'Công ty TNHH Thiên ngọc Minh Uy', '20', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '2', '8', 'ccc', '1', '', '', NULL),
+('202 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '3', 'Công ty Cổ phần đầu tư và phát triển', '250', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '7', 'ddd', '1', '', '', NULL),
+('203 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '4', 'Công ty Công nghệ VNext', '70', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '67', 'aaa', '1', '', '', NULL),
+('204 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '5', 'Công ty Xây dựng', '30', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '5', 'ddd', '1', '', '', NULL),
+('205 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '6', 'Công ty Bất động sản HQV', '40', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '5', 'sss', '1', '', '', NULL),
+('206 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '7', 'Binh đoàn 789 HQV', '35', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '4', 'zzz', '1', '', '', NULL),
+('207 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '8', 'NavaTech tầng 8 Hoàng Quốc Việt', '42', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '8', '4', 'nnn', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '9', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '9', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '10', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '1', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '11', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '2', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '12', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '13', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '14', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '15', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '16', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '17', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '8', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '18', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '9', '7', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '19', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '1', '8', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '20', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '2', '89', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '21', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '9', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '22', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '90', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '23', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '87', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '24', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '25', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '26', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '8', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '27', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '9', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '28', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '1', '23', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '29', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '2', '12', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '30', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '31', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '32', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '56', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '33', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '23', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '34', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '34', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '35', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '8', '54', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '36', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '42', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '37', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '9', '234', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '38', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '12', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '39', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '40', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '41', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '42', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '43', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '44', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '7', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '45', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '8', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '46', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '89', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '47', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '48', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '1', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '49', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '50', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '51', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '52', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '7', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '53', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '8', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '54', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '89', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '55', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '45', '9', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '56', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '12', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '57', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '14', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '58', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '7', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '59', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '60', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '61', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '5', '16', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '62', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '7', '76', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '63', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '87', '45', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '64', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '98', '35', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '65', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '23', '34', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '66', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '4', '32', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '67', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '12', '12', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '68', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '23', '11', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '69', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '23', '9', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '70', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '23', '8', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '71', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '23', '7', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '72', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '45', '5', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '73', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '4', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '74', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '75', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '1', '3', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '76', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '2', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '77', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '3', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '78', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '6', '6', 'mmm', '1', '', '', NULL),
+('208 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '79', 'Công ty VietIS Technology', '15', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '54', '65', 'mmm', '1', '', '', NULL),
+('', '80', 'xxxxxxca asd asd ', '1', '2020-03-17 22:30:06', '2020-03-17 22:30:06', '1', '1', NULL, NULL, 'xxxxxx@gmail.com', '213123123123', ''),
+('adasd asd asda sd', '81', ' asdasda asd ', '4', '2020-03-17 22:49:21', '2020-03-17 22:49:21', '1', '1', NULL, NULL, 'dasdasda@gmail.com', '12312312312', ''),
+('asdasdasd asd', '82', ' 1111111 asda asd', '13', '2020-03-17 22:53:49', '2020-03-17 22:53:48', '1', '1', NULL, NULL, 'asdasdadsad@gmail.asda', '123123123123', '');
+
+INSERT INTO `rc_jobs` (`job_id`, `job_name`, `date_add`, `date_upd`, `active`) VALUES
+('1', 'Công nghệ thông tin', '2020-03-08 21:06:20', '2020-03-08 21:06:20', '1'),
+('2', 'Y tế', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('3', 'Viễn thông', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('4', 'Giáo dục', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('5', 'Sản xuất Giấy', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('6', 'Bán cám', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('7', 'Bán nhân sự', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('8', 'Kinh doanh nội thất', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('9', 'Bàn quần áo', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('10', 'Tư vấn du học ', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('11', 'Tư vấn xuất khẩu lao động', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('12', 'Du lịch', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('13', 'Trung tâm ngoại giao', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('14', 'Thể thao', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('15', 'Thương mại điện tử', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('16', 'Đồ ăn', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('17', 'Thức uống', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('18', 'Abc', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1'),
+('19', 'Xyz', '2020-03-08 21:07:03', '2020-03-08 21:07:03', '1');
 
 INSERT INTO `rc_provinces` (`province_id`, `province_name`, `date_add`, `date_upd`, `type`) VALUES
 ('1', 'Hà Nội', '2020-03-07 21:40:20', '2020-03-07 21:40:20', 'Thành Phố'),
@@ -194,11 +300,14 @@ INSERT INTO `rc_users` (`user_id`, `gender`, `nick_name`, `first_name`, `last_na
 ('73', '1', 'jnnnm', NULL, NULL, 'minh100@gmail.com', '0988999999', '$2a$10$NHMb8I1V3fPsHJek2frTw.qGDMYNYOjkdydBiPhT34p0oqIk.bwsG', NULL, '2020-02-06', '1', '0', '2020-02-06 09:05:23', '2020-02-06 09:05:23', NULL),
 ('74', '1', 'enqtran', NULL, NULL, 'enqtran@gmail.com', '0123456789', '$2a$10$fsDFXOAmg5hFVSK5oVu7d.EYBKjGPCIK.xK8i607NjbH4D85Q2DTy', NULL, '2000-01-01', '1', '0', '2020-02-13 07:28:56', '2020-02-13 07:28:56', NULL),
 ('75', '1', 'b', NULL, NULL, 'mit@gmail.com', '0963258369', '$2a$10$xujFjQHkgW60Sjdn53W4/.I.pdkM5Z9/hMC/b3j7cJpBDTDiS7Fna', NULL, '2009-02-27', '1', '0', '2020-02-27 09:35:37', '2020-02-27 09:35:37', NULL),
-('76', '1', 'enqminh', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '123456', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-02-27 11:21:19', '2020-03-02 17:53:37', NULL),
+('76', '1', 'Biệt danh dài ngoằng', 'Nguyễn', 'Minh', 'enqminh@gmail.com', '0979456789', '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '1995-08-29', '1', '0', '2020-03-17 21:56:11', '2020-03-17 21:56:11', 'Hà Nội'),
 ('77', '1', 'anhpt', NULL, NULL, 'anhptse03395@gmail.com', '0982803436', '$2a$10$Y0wUa/pppfxlSpKcH.N97.UKGF3EbxeptCPgRRrQKEWQXIyZM9JTC', NULL, '1993-01-07', '1', '0', '2020-02-27 16:32:16', '2020-02-27 16:32:16', NULL),
 ('78', '1', 'toantroll', NULL, NULL, 'vuongvantoan2305@gmail.com', '0393240523', '$2a$10$5.3xM7gx4hP5yzbntag2H.tZFNkg5Rd44s4BmjBZZ2lnEZWHh/bsi', NULL, '1995-05-23', '1', '0', '2020-02-28 18:13:29', '2020-02-28 18:13:29', NULL),
-('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '123456', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33', NULL),
-('81', '1', 'MinhNC ', 'Nguyễn', 'Minh', 'minhnc@gmail.com', '0962441368', '123456', 'Hihi', '1995-08-29', NULL, NULL, '2020-03-10 21:15:47', '2020-03-10 21:15:47', NULL);
+('80', '1', 'Huấn Hoa Hồng', NULL, NULL, 'minhtest@gmail.com', NULL, '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', NULL, NULL, '0', '0', '2020-03-05 14:18:33', '2020-03-05 14:18:33', NULL),
+('81', '1', 'MinhNC ', 'Nguyễn', 'Minh', 'minhnc@gmail.com', '0962441368', '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', 'Hihi', '1995-08-29', NULL, NULL, '2020-03-10 21:15:47', '2020-03-10 21:15:47', NULL),
+('88', '1', 'Con lợn què', NULL, NULL, 'minhtest1@gmail.com', NULL, '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', NULL, NULL, '1', NULL, '2020-03-13 21:09:24', '2020-03-13 21:09:24', NULL),
+('91', '0', 'minhncssss', NULL, NULL, 'minhtest2@gmail.com', NULL, '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', NULL, NULL, '1', NULL, '2020-03-15 21:28:55', '2020-03-15 21:28:55', NULL),
+('92', '0', 'minhtest3', NULL, NULL, 'minhtest3@gmail.com', NULL, '$2b$10$w6foEZuWHsfr6ccewqfSru5CCvufQvixLthfvwVaN4kApwxZaafe.', NULL, NULL, '1', NULL, '2020-03-15 22:12:50', '2020-03-15 22:12:50', NULL);
 
 
 
