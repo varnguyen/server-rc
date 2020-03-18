@@ -45,7 +45,11 @@ let login = async (req, res) => {
                     // Passwords match
                     processLoginSuccess = async () => {
                         const accessToken = await jwtHelper.generateToken(response, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
+                        const refreshToken = await jwtHelper.generateToken(response, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
+                        tokenList[refreshToken] = { accessToken, refreshToken };
+
                         response.token = accessToken
+                        response.refreshToken = refreshToken
                         res.send({
                             code: 0,
                             message: LOGIN_SUCCESS,
@@ -82,8 +86,8 @@ let login = async (req, res) => {
 
         // debug(`Thực hiện tạo mã Refresh Token, [thời gian sống 10 năm] =))`);
         // const refreshToken = await jwtHelper.generateToken(userFakeData, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
-        // // Lưu lại 2 mã access & Refresh token, với key chính là cái refreshToken để đảm bảo unique và không sợ hacker sửa đổi dữ liệu truyền lên.
-        // // lưu ý trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
+        // Lưu lại 2 mã access & Refresh token, với key chính là cái refreshToken để đảm bảo unique và không sợ hacker sửa đổi dữ liệu truyền lên.
+        // lưu ý trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
         // tokenList[refreshToken] = { accessToken, refreshToken };
 
         // debug(`Gửi Token và Refresh Token về cho client...`);
@@ -114,7 +118,13 @@ let refreshToken = async (req, res) => {
             debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
             const accessToken = await jwtHelper.generateToken(userFakeData, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
             // gửi token mới về cho người dùng
-            return res.status(200).json({ accessToken });
+            return res.status(200).json({
+                code: 0,
+                message: "",
+                data: {
+                    token: accessToken
+                }
+            });
         } catch (error) {
             // Lưu ý trong dự án thực tế hãy bỏ dòng debug bên dưới, mình để đây để debug lỗi cho các bạn xem thôi
             debug(error);

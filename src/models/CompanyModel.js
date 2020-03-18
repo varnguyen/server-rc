@@ -40,9 +40,11 @@ Company.getAll = function (queryData, result) {
     // queryData.province_id = parseInt(queryData.province_id)
     const limit = (page - 1) * row + ',' + row;
     const pageNumber = (page - 1) * row;
-    const pageSize = row
+    const pageSize = row;
+    const active = 1;
 
-    let sql = "SELECT * FROM rc_companys";
+    let sql = "SELECT * FROM rc_companys WHERE active = ? ORDER BY company_id DESC";
+
     // if (job_id) {
     //     sql += ` WHERE job_id = ${job_id}`;
     // }
@@ -59,7 +61,7 @@ Company.getAll = function (queryData, result) {
 
     console.log(sql)
 
-    db.query(sql, (err, response) => {
+    db.query(sql, active, (err, response) => {
         if (err) {
             result(null, err);
             return;
