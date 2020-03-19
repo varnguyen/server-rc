@@ -50,7 +50,6 @@ let create = (req, result) => {
                         message: EMAIL_REGISTER,
                         data: ""
                     });
-
                 })
             } else {
                 result.status(500).send({ message: INTERNAL_SERVER_ERROR });
@@ -63,125 +62,17 @@ let create = (req, result) => {
         });
     })
 
+    // let data = req.body;
+    // const errors = validationResult(req);
+    // const errorss = {};
 
-    // // Save Customer in the database
-    // User.create(user, (err, res) => {
-    //     if (err) {
-    //         result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
-    //     }
-    //     else result.send({
-    //         code: 0,
-    //         message: "",
-    //         data: res
-    //     });
-    // });
-
-    return;
-
-    let data = req.body;
-    const errors = validationResult(req);
-    const errorss = {};
-
-    if (!errors.isEmpty()) {
-        console.log("FAILS VALID");
-        result.status(422).json({ errors: errors.array() });
-        return;
-    } else {
-        console.log("PASS VALID");
-
-
-        // return;
-        // User.findEmail(email, (err, res) => {
-        //     if (err) {
-        //         console.log(err);
-        //         result.sendStatus(500);
-        //         return;
-        //         // result.json({
-        //         //     "code": 500,
-        //         //     "failed": "Error on the server."
-        //         // })
-        //         return;
-        //     } else {
-        //         if (res.length > 0) {
-        //             // Đã trùng email
-        //             errorss["email"] = "Email đã được sử dụng."
-        //             const obj = {
-        //                 "code": 2,
-        //                 "message": 'Email đã được sử dụng.',
-        //                 "error": errorss,
-        //                 "data": ""
-        //             };
-        //             result.status(201).send(obj)
-        //             return;
-        //             // result.write(JSON.stringify(obj));
-        //             // result.end();
-        //         }
-        //     }
-        // })
-        // // Validate Email
-        // User.findNickname(nick_name, (err, res) => {
-        //     if (err) {
-        //         result.json({
-        //             "code": 500,
-        //             "failed": "Error on the server."
-        //         })
-        //     } else {
-        //         if (res.length > 0) {
-        //             // Đã trùng email
-        //             errorss["nick_name"] = "Nickname đã được sử dụng."
-        //             result.status(400).send({ errorss })
-        //         }
-        //     }
-        // })
-
-
-        // if (!String(nick_name).trim()) {
-        //     errors.name = 'Invalid value';
-        // }
-        // if (nick_name.trim().length > 100) {
-        //     errors.name = 'Maxlength is 100';
-        // }
-
-        // // Validate Password
-        // if (!String(password).trim()) {
-        //     errors.name = 'Invalid value';
-        // }
-        // if (password.trim().length < 8) {
-        //     errors.password = 'Minlength is 8';
-        // }
-        // if (password.trim().length > 16) {
-        //     errors.password = 'Maxlength is 16';
-        // }
-
-
-
-        // const isValidEmail = (email) => {
-        //     var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        //     return regex.test(String(email).toLowerCase());
-        // }
-
-        // User.createUser(new User(data), (err, res) => {
-        //     if (err) {
-        //         console.log(err);
-        //         result.sendStatus(500);
-        //         return;
-        //     } else {
-        //         const obj = {
-        //             "code": 0,
-        //             "message": "Register success!",
-        //             "error": "",
-        //             "data": res
-        //         };
-        //         result.status(201).send(obj);
-        //         return;
-        //         // result.write(JSON.stringify(obj));
-        //         // result.end();
-        //     }
-        // })
-    }
-
-    // res.status(500).json({ message: 'Internal Server Error.' });
-
+    // if (!errors.isEmpty()) {
+    //     console.log("FAILS VALID");
+    //     result.status(422).json({ errors: errors.array() });
+    //     return;
+    // } else {
+    //     console.log("PASS VALID");
+    // }
 }
 
 // Retrieve all users from the database.
