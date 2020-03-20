@@ -138,8 +138,12 @@ let refreshToken = async (req, res) => {
             message: 'No token provided refreshToken.',
         });
     }
+}
+let checkToken = async (req, res) => {
 };
+
 module.exports = {
     login: login,
     refreshToken: refreshToken,
+    checkToken: checkToken,
 }

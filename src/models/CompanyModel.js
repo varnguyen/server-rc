@@ -33,24 +33,15 @@ Company.create = function (company, result) {
 }
 Company.getAll = function (queryData, result) {
     console.log("query: ", queryData);
+
     const { page, row, job_id, province_id, company_name } = queryData
-    // queryData.page = parseInt(queryData.page)
-    // queryData.row = parseInt(queryData.row)
-    // queryData.job_id = parseInt(queryData.job_id)
-    // queryData.province_id = parseInt(queryData.province_id)
     const limit = (page - 1) * row + ',' + row;
-    const pageNumber = (page - 1) * row;
-    const pageSize = row;
     const active = 1;
 
-    let sql = "SELECT * FROM rc_companys WHERE active = ? ORDER BY company_id DESC";
-
-    // if (job_id) {
-    //     sql += ` WHERE job_id = ${job_id}`;
+    // if (company_name == null || company_name == undefined || company_name == '') {
+    //     company_name = 'xxx'
     // }
-    // if (province_id) {
-    //     sql += ` AND province_id = ${province_id}`;
-    // }
+    var sql = "SELECT * FROM rc_companys WHERE active = ? AND job_id = ? AND province_id = ? ORDER BY full_name ASC";
     // if (company_name) {
     //     sql += ` AND company_name = ${province_id}`;
     // }
@@ -58,10 +49,7 @@ Company.getAll = function (queryData, result) {
         sql += ` LIMIT ${limit}`;
     }
 
-
-    console.log(sql)
-
-    db.query(sql, active, (err, response) => {
+    db.query(sql, [active, job_id, province_id], (err, response) => {
         if (err) {
             result(null, err);
             return;
