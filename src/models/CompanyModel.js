@@ -32,9 +32,12 @@ Company.create = function (company, result) {
     })
 }
 Company.getAll = function (queryData, result) {
-    console.log("query: ", queryData);
+    console.log(queryData);
 
-    const { page, row, job_id, province_id, company_name } = queryData
+    var { page, row, job_id, province_id, company_name } = queryData
+    page = parseInt(page, 10)
+    row = parseInt(row, 10)
+
     const limit = (page - 1) * row + ',' + row;
     const active = 1;
 

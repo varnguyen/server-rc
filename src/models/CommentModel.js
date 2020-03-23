@@ -38,6 +38,17 @@ Comment.getAll = function (result) {
         result(null, response);
     })
 }
+Comment.get7NewComment = function (result) {
+    const deleted = 0;
+    let sql = "SELECT * FROM rc_comments WHERE deleted = ? ORDER BY cmt_id DESC LIMIT 0,7";
+    db.query(sql, [deleted], (err, response) => {
+        if (err) {
+            result(null, err);
+            return;
+        }
+        result(null, response);
+    })
+}
 Comment.findById = function (cmtId, result) {
     let sql = 'SELECT * FROM rc_comments WHERE cmt_id = ?'
     db.query(sql, [cmtId], (err, response) => {

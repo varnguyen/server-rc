@@ -19,6 +19,9 @@ const CommentsController = require("../controllers/CommentsController");
  * @param {*} app from express
  */
 let initAPIs = (app) => {
+    // #########################################
+    // ################ Frontend ###############
+
     // Login
     router.post("/api/auth/login", AuthController.login);
 
@@ -30,6 +33,7 @@ let initAPIs = (app) => {
         ValidateController.validate('createUser'),
         UsersController.create
     );
+
     // Province
     router.get("/api/province", ProvincesController.findAll);
 
@@ -44,12 +48,12 @@ let initAPIs = (app) => {
     // router.delete("/api/company/:companyId", CompanysController.remove);
 
     // Comment
+    router.get("/api/statistic-comment", CommentsController.get7NewComment);
     router.get("/api/comment", CommentsController.findAll);
     router.post("/api/comment", CommentsController.create);
     router.get("/api/comment/:commentId", CommentsController.findOne);
     router.put("/api/comment/:commentId", CommentsController.update);
     router.delete("/api/comment/:commentId", CommentsController.remove);
-
     // Users
     router.get("/api/users", UsersController.findAll);
     router.post("/api/users", UsersController.create);
@@ -57,12 +61,21 @@ let initAPIs = (app) => {
     router.put("/api/users/:userId", UsersController.update);
     router.delete("/api/users/:userId", UsersController.remove);
 
+    // #########################################
+    // ################ Backend ###############
+
     // User authMiddleware.isAuth before api need Auth
     router.use(AuthMiddleWare.isAuth);
+
+    // #########################################
+    // ################ Frontend ###############
 
     // Profile
     router.get("/api/me/profile", UsersController.getUserInfo);
     router.post("/api/me/update", UsersController.update);
+
+    // #########################################
+    // ################ Backend ###############
 
     return app.use("/", router);
 }

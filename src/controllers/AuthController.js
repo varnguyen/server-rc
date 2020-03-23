@@ -139,11 +139,8 @@ let refreshToken = async (req, res) => {
         });
     }
 }
-let checkToken = async (req, res) => {
-};
 
 module.exports = {
     login: login,
     refreshToken: refreshToken,
-    checkToken: checkToken,
 }

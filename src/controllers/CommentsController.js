@@ -41,6 +41,19 @@ let findAll = (req, result) => {
     })
 }
 
+// Retrieve 7 from the database.
+let get7NewComment = (req, result) => {
+    Comment.get7NewComment((err, res) => {
+        if (err) {
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
+        } else result.send({
+            code: 0,
+            message: "",
+            data: res
+        });
+    })
+}
+
 // Find a single with a ID
 let findOne = (req, result) => {
     let commentId = req.params.commentId;
@@ -100,4 +113,5 @@ module.exports = {
     findOne: findOne,
     update: update,
     remove: remove,
+    get7NewComment: get7NewComment
 }

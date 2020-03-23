@@ -34,7 +34,6 @@ let create = (req, result) => {
 // Retrieve all companys from the database.
 let findAll = (req, result) => {
     var queryData = req.query;
-    console.log("object", req.body);
     Company.getAll(queryData, (err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
