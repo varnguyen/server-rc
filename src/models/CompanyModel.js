@@ -35,8 +35,6 @@ Company.getAll = function (queryData, result) {
     console.log(queryData);
 
     var { page, row, job_id, province_id, company_name } = queryData
-    page = parseInt(page, 10)
-    row = parseInt(row, 10)
 
     const limit = (page - 1) * row + ',' + row;
     const active = 1;
@@ -44,7 +42,16 @@ Company.getAll = function (queryData, result) {
     // if (company_name == null || company_name == undefined || company_name == '') {
     //     company_name = 'xxx'
     // }
-    var sql = "SELECT * FROM rc_companys WHERE active = ? AND job_id = ? AND province_id = ? ORDER BY full_name ASC";
+
+    var sql = "SELECT * FROM rc_companys WHERE active = ?"
+    if (job_id > 0) {
+        sql += ` AND job_id = ${job_id}`;
+    }
+    if (province_id > 0) {
+        sql += ` AND province_id = ${province_id}`;
+    }
+    sql += " ORDER BY full_name ASC";
+
     // if (company_name) {
     //     sql += ` AND company_name = ${province_id}`;
     // }
@@ -52,7 +59,7 @@ Company.getAll = function (queryData, result) {
         sql += ` LIMIT ${limit}`;
     }
 
-    db.query(sql, [active, job_id, province_id], (err, response) => {
+    db.query(sql, [active], (err, response) => {
         if (err) {
             result(null, err);
             return;

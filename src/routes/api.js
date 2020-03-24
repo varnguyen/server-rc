@@ -42,6 +42,7 @@ let initAPIs = (app) => {
 
     // Companys
     router.get("/api/company", CompanysController.findAll);
+    router.get("/api/company/:companyId/comment", CommentsController.findAllCommentByCompanyId);
     router.post("/api/company", CompanysController.create);
     router.get("/api/company/:companyId", CompanysController.findOne);
     // router.put("/api/company/:companyId", CompanysController.update);

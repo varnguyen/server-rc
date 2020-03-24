@@ -41,6 +41,32 @@ let findAll = (req, result) => {
     })
 }
 
+// Find a single with a ID
+let findAllCommentByCompanyId = (req, result) => {
+    var queryData = req.query;
+    let companyId = req.params.companyId;
+    Comment.getAllCommentByCompanyId(queryData, companyId, (err, res) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                result.send({
+                    code: 0,
+                    message: "",
+                    data: []
+                });
+            } else {
+                result.status(500).send({ message: "Error retrieving comment with company id " + companyId });
+            }
+        }
+        else {
+            result.send({
+                code: 0,
+                message: "",
+                data: res
+            });
+        }
+    })
+}
+
 // Retrieve 7 from the database.
 let get7NewComment = (req, result) => {
     Comment.get7NewComment((err, res) => {
@@ -113,5 +139,6 @@ module.exports = {
     findOne: findOne,
     update: update,
     remove: remove,
-    get7NewComment: get7NewComment
+    get7NewComment: get7NewComment,
+    findAllCommentByCompanyId: findAllCommentByCompanyId
 }

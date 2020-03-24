@@ -38,6 +38,26 @@ Comment.getAll = function (result) {
         result(null, response);
     })
 }
+Comment.getAllCommentByCompanyId = function (queryData, companyId, result) {
+    var { page, row } = queryData;
+    const limit = (page - 1) * row + ',' + row;
+    let sql = 'SELECT * FROM rc_comments WHERE company_id = ? ORDER BY cmt_id DESC';
+    if (page && row) {
+        sql += ` LIMIT ${limit}`;
+    }
+    db.query(sql, [companyId], (err, response) => {
+        if (err) {
+            result(null, err);
+            return;
+        }
+        if (response.length) {
+            result(null, response);
+            return;
+        }
+        // not found comment with the company id
+        result({ kind: "not_found" }, null);
+    })
+}
 Comment.get7NewComment = function (result) {
     const deleted = 0;
     let sql = "SELECT * FROM rc_comments WHERE deleted = ? ORDER BY cmt_id DESC LIMIT 0,7";
