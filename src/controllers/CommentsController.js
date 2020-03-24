@@ -6,25 +6,59 @@
 'use strict'
 
 const Comment = require("../models/CommentModel");
-const { INTERNAL_SERVER_ERROR } = require("../helpers/error-msg");
+const { INTERNAL_SERVER_ERROR, INSERT_SUCCESS } = require("../helpers/error-msg");
 
 // Create and save
 let create = (req, result) => {
+    // // Validate request
+    // if (!req.body) {
+    //     result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
+    // }
+
+    // // Get data from body
+    // const comment = req.body
+    // const obj_comment = new Comment(comment);
+    // console.log(obj_comment);
+
+    // // Save in database
+    // Comment.create(obj_comment, (err, res) => {
+    //     if (err) {
+    //         result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
+    //     }
+    //     else result.send({
+    //         code: 0,
+    //         message: INSERT_SUCCESS,
+    //         data: res
+    //     });
+    // });
+}
+
+// Create review company and save
+let createReviewCompany = (req, result) => {
     // Validate request
     if (!req.body) {
         result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
 
     // Get data from body
-    const { user_id, company_id, comment, deleted } = req.body
-    const obj_comment = new Compnay({ user_id, company_id, comment, deleted });
+    const comment = req.body
+    const obj_comment = new Comment(comment);
+    console.log(obj_comment);
 
     // Save in database
     Comment.create(obj_comment, (err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
         }
-        else result.send({ res, message: INSERT_SUCCESS });
+
+        else {
+            console.log(res);
+            result.send({
+                code: 0,
+                message: INSERT_SUCCESS,
+                data: res
+            });
+        }
     });
 }
 
@@ -42,10 +76,10 @@ let findAll = (req, result) => {
 }
 
 // Find a single with a ID
-let findAllCommentByCompanyId = (req, result) => {
+let findAllReviewByCompanyId = (req, result) => {
     var queryData = req.query;
     let companyId = req.params.companyId;
-    Comment.getAllCommentByCompanyId(queryData, companyId, (err, res) => {
+    Comment.getAllReviewByCompanyId(queryData, companyId, (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 result.send({
@@ -140,5 +174,6 @@ module.exports = {
     update: update,
     remove: remove,
     get7NewComment: get7NewComment,
-    findAllCommentByCompanyId: findAllCommentByCompanyId
+    findAllReviewByCompanyId: findAllReviewByCompanyId,
+    createReviewCompany: createReviewCompany
 }

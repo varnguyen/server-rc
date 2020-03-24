@@ -8,18 +8,19 @@
 const db = require("../database/db");
 
 const Comment = function (comment) {
-    this.cmt_id = comment.cmt_id;
     this.user_id = comment.user_id;
     this.company_id = comment.company_id;
     this.comment = comment.comment;
-    this.deleted = comment.deleted;
-    this.date_add = comment.date_add;
+    this.deleted = 0;
+    this.is_review = comment.is_review;
+    this.who_id = comment.who_id;
+    this.date_add = new Date();
     this.date_upd = new Date();
 }
 
 Comment.create = function (comment, result) {
     let sql = 'INSERT INTO rc_comments SET ?'
-    db.query(sql, [company], (err, response) => {
+    db.query(sql, [comment], (err, response) => {
         if (err) {
             result(err, null);
             return;
@@ -38,10 +39,10 @@ Comment.getAll = function (result) {
         result(null, response);
     })
 }
-Comment.getAllCommentByCompanyId = function (queryData, companyId, result) {
+Comment.getAllReviewByCompanyId = function (queryData, companyId, result) {
     var { page, row } = queryData;
     const limit = (page - 1) * row + ',' + row;
-    let sql = 'SELECT * FROM rc_comments WHERE company_id = ? ORDER BY cmt_id DESC';
+    let sql = 'SELECT * FROM rc_comments WHERE company_id = ? AND is_review = 1 ORDER BY cmt_id DESC';
     if (page && row) {
         sql += ` LIMIT ${limit}`;
     }

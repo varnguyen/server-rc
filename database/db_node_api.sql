@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-23 22:29:16.0200
+-- Generation Time: 2020-03-24 22:54:00.1340
 -- -------------------------------------------------------------
 
 
@@ -21,14 +21,16 @@
 CREATE TABLE `rc_comments` (
   `cmt_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
-  `comment` varchar(255) NOT NULL,
+  `comment` varchar(500) NOT NULL,
   `deleted` int(11) DEFAULT '0',
   `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL,
+  `is_review` int(11) DEFAULT '1',
+  `who_id` int(11) DEFAULT '1',
   PRIMARY KEY (`cmt_id`),
   UNIQUE KEY `cmt_id` (`cmt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_companys` (
   `address` varchar(255) DEFAULT NULL,
@@ -90,16 +92,35 @@ CREATE TABLE `rc_users` (
   KEY `id_gender` (`gender`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-INSERT INTO `rc_comments` (`cmt_id`, `company_id`, `comment`, `deleted`, `date_add`, `date_upd`, `user_id`) VALUES
-('1', '1', 'xxxx', '0', '2020-03-14 22:41:11', '2020-03-14 22:41:11', '81'),
-('2', '1', 'yyy', '0', '2020-03-14 22:46:44', '2020-03-14 22:46:44', '82'),
-('3', '2', 'Xin chào tôi là ẩn danh', '0', '2020-03-23 22:10:16', '2020-03-23 22:14:16', '81'),
-('4', '2', 'Chào bạn', '0', '2020-03-23 22:14:59', '2020-03-23 22:14:59', '76'),
-('5', '1', 'Đồ ngốc', '0', '2020-03-23 22:16:50', '2020-03-23 22:16:50', '81'),
-('6', '1', 'ahihi', '0', '2020-03-23 22:17:50', '2020-03-23 22:16:50', '81'),
-('7', '1', 'Chu duyên bún', '0', '2020-03-23 22:18:50', '2020-03-23 22:16:50', '76'),
-('8', '1', 'View sonic', '0', '2020-03-23 22:19:50', '2020-03-23 22:16:50', '76'),
-('9', '1', 'Dell', '0', '2020-03-23 22:20:50', '2020-03-23 22:16:50', '81');
+INSERT INTO `rc_comments` (`cmt_id`, `company_id`, `comment`, `deleted`, `date_add`, `date_upd`, `user_id`, `is_review`, `who_id`) VALUES
+('1', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-14 22:41:11', '2020-03-14 22:41:11', '81', '1', '1'),
+('2', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-14 22:46:44', '2020-03-14 22:46:44', '82', '1', '3'),
+('3', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:10:16', '2020-03-23 22:14:16', '81', '1', '2'),
+('4', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:14:59', '2020-03-23 22:14:59', '76', '1', '2'),
+('5', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:16:50', '2020-03-23 22:16:50', '81', '1', '1'),
+('6', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:17:50', '2020-03-23 22:16:50', '81', '1', '1'),
+('7', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:18:50', '2020-03-23 22:16:50', '76', '1', '1'),
+('8', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:19:50', '2020-03-23 22:16:50', '76', '1', '1'),
+('9', '7', 'If you are looking for a solution for how to get javascript unique array then your solution is the Javascript array filter() method. Primitive values in JavaScript are immutable values except for objects. Types of primitive values include Null, Undefined, Boolean, Number, Symbol and String. This tutorial also gives you the answer to the How can I get a list of unique values in array.If you are looking for a solution for how to get javascript unique array then your solution is the Java', '0', '2020-03-23 22:20:50', '2020-03-23 22:16:50', '81', '1', '1'),
+('10', '7', 'asda xxxxxx rrrrrr ', '0', '2020-03-24 21:49:42', '2020-03-24 21:49:42', '76', '1', '3'),
+('11', '7', 'xczxczxc asdas ', '0', '2020-03-24 21:51:42', '2020-03-24 21:51:42', '76', '1', '3'),
+('12', '7', 'Hello xin chào các bạn của RC. Các bạn ủng hộ mình nhé. Cảm ơn', '0', '2020-03-24 21:56:53', '2020-03-24 21:56:53', '76', '1', '3'),
+('13', '7', 'I sent my girlfriend this song after I told her I loved her, we dated for 4 months before she got in a fatal car crash and died due to a lung puncture from one of her ribs. I played this song as she lied in the hospital bed, as the EEG beeped away. Only after 2 years I can listen to it again.', '0', '2020-03-24 21:58:36', '2020-03-24 21:58:36', '76', '1', '6'),
+('14', '7', 'One thing I\'ve got pretty used to is using models in Angular; using objects which hold your data may be pretty useful. It makes the developer live significantly easier - so let me show you what I\'m talking about and how I handle models in Angular.', '0', '2020-03-24 22:04:05', '2020-03-24 22:04:05', '76', '1', '1'),
+('15', '7', 'dasd asd asd', '0', '2020-03-24 22:06:35', '2020-03-24 22:06:35', '76', '1', '1'),
+('16', '7', 'zxcasad asda', '0', '2020-03-24 22:09:23', '2020-03-24 22:09:23', '76', '1', '1'),
+('17', '7', 'xxxxx', '0', '2020-03-24 22:09:34', '2020-03-24 22:09:34', '76', '1', '1'),
+('18', '7', 'asdas dasd asd', '0', '2020-03-24 22:09:59', '2020-03-24 22:09:59', '76', '1', '1'),
+('19', '7', '11111 ', '0', '2020-03-24 22:12:14', '2020-03-24 22:12:14', '76', '1', '1'),
+('20', '7', 'asdasda dasd asd ', '0', '2020-03-24 22:17:39', '2020-03-24 22:17:39', '76', '1', '1'),
+('21', '7', 'xzxcasdas dasd asd asdasd asdasdasddasd', '0', '2020-03-24 22:17:55', '2020-03-24 22:17:55', '76', '1', '1'),
+('22', '7', 'sadasd\nasd a\nasd as\n\n', '0', '2020-03-24 22:25:16', '2020-03-24 22:25:16', '76', '1', '1'),
+('23', '7', 'asdas \nas da\nas d\n', '0', '2020-03-24 22:28:27', '2020-03-24 22:28:27', '76', '1', '1'),
+('24', '7', '1. asdzxc as \n2. asda xczxc asd .\n3. czx cxzc zxc asd ', '0', '2020-03-24 22:30:37', '2020-03-24 22:30:37', '76', '1', '1'),
+('25', '7', 'asd asd asd', '0', '2020-03-24 22:31:17', '2020-03-24 22:31:17', '76', '1', '1'),
+('26', '7', 'asd as', '0', '2020-03-24 22:31:21', '2020-03-24 22:31:21', '76', '1', '1'),
+('27', '7', 'asd\nasda\ndasd\nas\nda\nsd\na\nd\na\nsd\na\nsd\na', '0', '2020-03-24 22:52:18', '2020-03-24 22:52:18', '76', '1', '1'),
+('28', '7', 'asda\nasda\nda\nsda\nsd\na\nd\na\nd\na\nd\n\nas\nd\na\nd\n', '0', '2020-03-24 22:52:26', '2020-03-24 22:52:26', '76', '1', '1');
 
 INSERT INTO `rc_companys` (`address`, `company_id`, `full_name`, `member_total`, `date_add`, `date_upd`, `job_id`, `province_id`, `short_name`, `active`, `email`, `phone`, `website`) VALUES
 ('200 Cầu Giấy, Nghĩa Đô, Hoàng Quốc Việt, Hà Nội', '1', 'Công ty Re-Com', '1', '2020-03-06 10:36:41', '2020-03-06 10:36:41', '2', '1', 'xxx', '1', 'gvn-techno@gmail.com', '0123456789', NULL),
