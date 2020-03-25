@@ -12,6 +12,7 @@ const Comment = function (comment) {
     this.company_id = comment.company_id;
     this.comment = comment.comment;
     this.deleted = 0;
+    this.review_id = comment.review_id;
     this.is_review = comment.is_review;
     this.who_id = comment.who_id;
     this.date_add = new Date();

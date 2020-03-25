@@ -79,6 +79,34 @@ let findAll = (req, result) => {
 let findAllReviewByCompanyId = (req, result) => {
     var queryData = req.query;
     let companyId = req.params.companyId;
+    console.log(queryData);
+    Comment.getAllReviewByCompanyId(queryData, companyId, (err, res) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                result.send({
+                    code: 0,
+                    message: "",
+                    data: []
+                });
+            } else {
+                result.status(500).send({ message: "Error retrieving comment with company id " + companyId });
+            }
+        }
+        else {
+            result.send({
+                code: 0,
+                message: "",
+                data: res
+            });
+        }
+    })
+}
+
+// Find a single with a ID
+let findAllReplyReviewBy = (req, result) => {
+    var queryData = req.query;
+    let companyId = req.params.companyId;
+    console.log(queryData);
     Comment.getAllReviewByCompanyId(queryData, companyId, (err, res) => {
         if (err) {
             if (err.kind === "not_found") {
@@ -175,5 +203,6 @@ module.exports = {
     remove: remove,
     get7NewComment: get7NewComment,
     findAllReviewByCompanyId: findAllReviewByCompanyId,
+    findAllReplyReviewBy: findAllReplyReviewBy,
     createReviewCompany: createReviewCompany
 }
