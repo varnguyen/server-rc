@@ -12,7 +12,6 @@ const Comment = function (comment) {
     this.company_id = comment.company_id;
     this.comment = comment.comment;
     this.deleted = 0;
-    this.review_id = comment.review_id;
     this.is_review = comment.is_review;
     this.who_id = comment.who_id;
     this.date_add = new Date();
@@ -43,6 +42,7 @@ Comment.getAll = function (result) {
 Comment.getAllReviewByCompanyId = function (queryData, companyId, result) {
     var { page, row } = queryData;
     const limit = (page - 1) * row + ',' + row;
+    // let sql1 = 'SELECT * FROM rc_comments LEFT JOIN rc_users ON rc_comments.user_id = rc_users.user_id LEFT JOIN comments ON rc_comments.article_id = comments.id_article';
     let sql = 'SELECT * FROM rc_comments WHERE company_id = ? AND is_review = 1 ORDER BY cmt_id DESC';
     if (page && row) {
         sql += ` LIMIT ${limit}`;
@@ -62,8 +62,16 @@ Comment.getAllReviewByCompanyId = function (queryData, companyId, result) {
 }
 Comment.get7NewComment = function (result) {
     const deleted = 0;
+
+    let sql1 = `SELECT * FROM rc_comments LEFT JOIN rc_users AS user ON rc_comments.user_id = user.user_id LEFT JOIN rc_companys ON rc_comments.company_id = rc_companys.company_id WHERE rc_comments.deleted = ? ORDER BY rc_comments.cmt_id DESC LIMIT 0,7`;
+
+    let spl2 = 'SELECT * FROM rc_comments JOIN rc_users ON rc_users.user_id = rc_comments.user_id WHERE rc_comments.deleted = ? ORDER BY rc_comments.cmt_id DESC LIMIT 0,7';
+
+    let sqqqq = `SELECT DISTINCT rc_comments.cmt_id,rc_comments.company_id,rc_comments.comment,rc_comments.user_id,rc_users.user_id,rc_users.nick_name,rc_users.email,rc_companys.company_id,rc_companys.full_name,rc_users.phone FROM rc_comments INNER JOIN rc_users ON rc_comments.user_id = rc_users.user_id INNER JOIN rc_companys ON rc_comments.company_id = rc_companys.company_id WHERE rc_comments.deleted = 0 ORDER BY rc_comments.cmt_id DESC  LIMIT 0,7`;
+
     let sql = "SELECT * FROM rc_comments WHERE deleted = ? ORDER BY cmt_id DESC LIMIT 0,7";
-    db.query(sql, [deleted], (err, response) => {
+
+    db.query(sqqqq, [deleted], (err, response) => {
         if (err) {
             result(null, err);
             return;
