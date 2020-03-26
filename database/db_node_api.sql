@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_node_api
--- Generation Time: 2020-03-25 22:41:49.5500
+-- Generation Time: 2020-03-26 17:59:24.6140
 -- -------------------------------------------------------------
 
 
@@ -19,26 +19,26 @@
 
 
 CREATE TABLE `rc_comments` (
-  `cmt_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `cmt_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int NOT NULL,
   `comment` varchar(500) NOT NULL,
-  `deleted` int(11) DEFAULT '0',
+  `deleted` int DEFAULT '0',
   `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int(11) NOT NULL,
-  `is_review` int(11) DEFAULT '1',
-  `who_id` int(11) DEFAULT '1',
+  `user_id` int NOT NULL,
+  `is_review` int DEFAULT '1',
+  `who_id` int DEFAULT '1',
   PRIMARY KEY (`cmt_id`),
   UNIQUE KEY `cmt_id` (`cmt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_comments_reply` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int NOT NULL,
   `comment` varchar(500) NOT NULL,
-  `deleted` int(11) DEFAULT '0',
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `cmt_id` int(11) NOT NULL DEFAULT '0',
+  `deleted` int DEFAULT '0',
+  `user_id` int NOT NULL DEFAULT '0',
+  `cmt_id` int NOT NULL DEFAULT '0',
   `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -47,15 +47,15 @@ CREATE TABLE `rc_comments_reply` (
 
 CREATE TABLE `rc_companys` (
   `address` varchar(255) DEFAULT NULL,
-  `company_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) NOT NULL,
   `member_total` varchar(50) NOT NULL DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `job_id` int(11) NOT NULL DEFAULT '1',
-  `province_id` int(11) NOT NULL DEFAULT '1',
+  `job_id` int NOT NULL DEFAULT '1',
+  `province_id` int NOT NULL DEFAULT '1',
   `short_name` varchar(255) DEFAULT NULL,
-  `active` int(11) DEFAULT '0',
+  `active` int DEFAULT '0',
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `website` varchar(255) DEFAULT NULL,
@@ -63,17 +63,17 @@ CREATE TABLE `rc_companys` (
 ) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_jobs` (
-  `job_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `job_name` varchar(255) NOT NULL,
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `active` int(11) DEFAULT '1',
+  `active` int DEFAULT '1',
   PRIMARY KEY (`job_id`),
   UNIQUE KEY `job_id` (`job_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_provinces` (
-  `province_id` bigint(20) unsigned NOT NULL,
+  `province_id` bigint unsigned NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `date_add` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_upd` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -83,8 +83,8 @@ CREATE TABLE `rc_provinces` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `rc_users` (
-  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `gender` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
+  `user_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `gender` bigint unsigned NOT NULL DEFAULT '0' COMMENT '0: female 1: male',
   `nick_name` varchar(100) NOT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE `rc_users` (
   `password` varchar(512) DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` date DEFAULT NULL,
-  `active` tinyint(3) unsigned DEFAULT '1',
+  `active` tinyint unsigned DEFAULT '1',
   `deleted` tinyint(1) DEFAULT '0',
   `date_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_upd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -142,7 +142,10 @@ INSERT INTO `rc_comments` (`cmt_id`, `company_id`, `comment`, `deleted`, `date_a
 ('33', '7', '1111111', '0', '2020-03-25 11:14:53', '2020-03-25 11:14:53', '80', '0', '0'),
 ('34', '7', '1111111', '0', '2020-03-25 11:17:52', '2020-03-25 11:17:52', '80', '0', '0'),
 ('35', '7', 'Mọi người làm việc rất chăm chỉ.', '0', '2020-03-25 20:08:38', '2020-03-25 20:08:38', '76', '1', '1'),
-('36', '7', 'xxxxx', '0', '2020-03-25 20:11:37', '2020-03-25 20:11:37', '76', '1', '1');
+('36', '7', 'xxxxx', '0', '2020-03-25 20:11:37', '2020-03-25 20:11:37', '76', '1', '1'),
+('37', '7', 'Em cũng không cần phải trả lời vì biết em không có gì từ anh để có thể trở thành.', '0', '2020-03-26 10:16:06', '2020-03-26 10:16:06', '80', '1', '1'),
+('38', '84', 'Để anh lại và đèn trời đêm. Chỉ là con thuyền của anh nó vẫn chưa về tới', '0', '2020-03-26 10:17:56', '2020-03-26 10:17:56', '80', '1', '1'),
+('39', '83', 'Công ty này có dự án Project-X rất hay.', '0', '2020-03-26 11:26:27', '2020-03-26 11:26:27', '88', '1', '1');
 
 INSERT INTO `rc_comments_reply` (`id`, `company_id`, `comment`, `deleted`, `user_id`, `cmt_id`, `date_add`, `date_upd`) VALUES
 ('1', '7', 'Reply comment 1', '0', '76', '36', '2020-03-25 20:39:19', '2020-03-25 20:39:19'),

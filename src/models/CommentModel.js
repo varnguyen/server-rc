@@ -63,15 +63,25 @@ Comment.getAllReviewByCompanyId = function (queryData, companyId, result) {
 Comment.get7NewComment = function (result) {
     const deleted = 0;
 
-    let sql1 = `SELECT * FROM rc_comments LEFT JOIN rc_users AS user ON rc_comments.user_id = user.user_id LEFT JOIN rc_companys ON rc_comments.company_id = rc_companys.company_id WHERE rc_comments.deleted = ? ORDER BY rc_comments.cmt_id DESC LIMIT 0,7`;
+    let sql = `SELECT 
+    rc_comments.*, 
+    rc_users.nick_name AS nick_name, 
+    rc_companys.full_name AS full_name, 
+    rc_companys.short_name AS company_short_name 
+    FROM rc_comments 
+    LEFT JOIN rc_users 
+        ON rc_comments.user_id = rc_users.user_id 
+    LEFT JOIN rc_companys 
+        ON rc_comments.company_id = rc_companys.company_id 
+    WHERE rc_comments.deleted = ? 
+    ORDER BY rc_comments.cmt_id DESC 
+    LIMIT 0,7`;
 
     let spl2 = 'SELECT * FROM rc_comments JOIN rc_users ON rc_users.user_id = rc_comments.user_id WHERE rc_comments.deleted = ? ORDER BY rc_comments.cmt_id DESC LIMIT 0,7';
 
     let sqqqq = `SELECT DISTINCT rc_comments.cmt_id,rc_comments.company_id,rc_comments.comment,rc_comments.user_id,rc_users.user_id,rc_users.nick_name,rc_users.email,rc_companys.company_id,rc_companys.full_name,rc_users.phone FROM rc_comments INNER JOIN rc_users ON rc_comments.user_id = rc_users.user_id INNER JOIN rc_companys ON rc_comments.company_id = rc_companys.company_id WHERE rc_comments.deleted = 0 ORDER BY rc_comments.cmt_id DESC  LIMIT 0,7`;
 
-    let sql = "SELECT * FROM rc_comments WHERE deleted = ? ORDER BY cmt_id DESC LIMIT 0,7";
-
-    db.query(sqqqq, [deleted], (err, response) => {
+    db.query(sql, [deleted], (err, response) => {
         if (err) {
             result(null, err);
             return;

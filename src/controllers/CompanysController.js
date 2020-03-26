@@ -46,6 +46,21 @@ let findAll = (req, result) => {
     })
 }
 
+// Statistic total of company
+let getCompanyByTotalReview = (req, result) => {
+    Company.countTotalReivewCompany((err, res) => {
+        if (err) {
+            result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
+        } else {
+            result.send({
+                code: 0,
+                message: "",
+                data: res
+            })
+        };
+    })
+}
+
 // Find a single company with a companyId
 let findOne = (req, result) => {
     let companyId = req.params.companyId;
@@ -108,4 +123,5 @@ module.exports = {
     findOne: findOne,
     update: update,
     remove: remove,
+    getCompanyByTotalReview: getCompanyByTotalReview
 }

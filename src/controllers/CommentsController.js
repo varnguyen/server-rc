@@ -134,11 +134,13 @@ let get7NewComment = (req, result) => {
     Comment.get7NewComment((err, res) => {
         if (err) {
             result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
-        } else result.send({
-            code: 0,
-            message: "",
-            data: res
-        });
+        } else {
+            result.send({
+                code: 0,
+                message: "",
+                data: res
+            })
+        };
     })
 }
 

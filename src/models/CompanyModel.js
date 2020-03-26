@@ -67,6 +67,29 @@ Company.getAll = function (queryData, result) {
         result(null, response);
     })
 }
+Company.countTotalReivewCompany = function (result) {
+    const deleted = 0;
+
+    let sql = `SELECT 
+    rc_companys.*, 
+    COUNT(rc_companys.company_id) AS total_review 
+    FROM rc_companys 
+    JOIN rc_comments 
+        ON rc_comments.company_id = rc_companys.company_id 
+    WHERE rc_comments.deleted = ? 
+    GROUP BY 
+        rc_companys.company_id 
+    ORDER BY COUNT(rc_companys.company_id) DESC 
+    LIMIT 0,7`;
+
+    db.query(sql, [deleted], (err, response) => {
+        if (err) {
+            result(null, err);
+            return;
+        }
+        result(null, response);
+    })
+}
 Company.findById = function (companyId, result) {
     let sql = 'SELECT * FROM rc_companys WHERE company_id = ?'
     db.query(sql, [companyId], (err, response) => {

@@ -46,6 +46,8 @@ let initAPIs = (app) => {
     router.post("/api/company/comment", CommentsController.createReviewCompany);
     router.post("/api/company", CompanysController.create);
     router.get("/api/company/:companyId", CompanysController.findOne);
+    router.get("/api/statistic-review", CompanysController.getCompanyByTotalReview);
+
     // router.put("/api/company/:companyId", CompanysController.update);
     // router.delete("/api/company/:companyId", CompanysController.remove);
 
