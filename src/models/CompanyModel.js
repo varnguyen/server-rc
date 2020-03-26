@@ -32,16 +32,9 @@ Company.create = function (company, result) {
     })
 }
 Company.getAll = function (queryData, result) {
-    console.log(queryData);
-
-    var { page, row, job_id, province_id, company_name } = queryData
-
+    var { page, row, job_id, province_id, name } = queryData
     const limit = (page - 1) * row + ',' + row;
     const active = 1;
-
-    // if (company_name == null || company_name == undefined || company_name == '') {
-    //     company_name = 'xxx'
-    // }
 
     var sql = "SELECT * FROM rc_companys WHERE active = ?"
     if (job_id > 0) {
@@ -50,11 +43,10 @@ Company.getAll = function (queryData, result) {
     if (province_id > 0) {
         sql += ` AND province_id = ${province_id}`;
     }
+    if (name && name !== '' && name !== undefined) {
+        sql += ` AND full_name LIKE '%${name.trim()}%'`;
+    }
     sql += " ORDER BY full_name ASC";
-
-    // if (company_name) {
-    //     sql += ` AND company_name = ${province_id}`;
-    // }
     if (page && row) {
         sql += ` LIMIT ${limit}`;
     }
