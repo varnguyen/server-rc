@@ -30,7 +30,7 @@ let initAPIs = (app) => {
 
     // Register
     router.post("/api/auth/register",
-        ValidateController.validate('createUser'),
+        ValidateController.validate('registerUser'),
         UsersController.create
     );
 
@@ -68,6 +68,9 @@ let initAPIs = (app) => {
     // #########################################
     // ################ Backend ###############
 
+    // Job
+    router.get("/api_be/job-type", JobsController.findAll);
+
     // User authMiddleware.isAuth before api need Auth
     router.use(AuthMiddleWare.isAuth);
 
@@ -80,6 +83,7 @@ let initAPIs = (app) => {
 
     // #########################################
     // ################ Backend ###############
+
 
     return app.use("/", router);
 }

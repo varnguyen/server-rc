@@ -14,13 +14,13 @@ let validate = (method) => {
                 ,
                 body('password')
                     .not().isEmpty().withMessage('Password is required')
-                    .isLength({ min: 6 }).withMessage('Password phải lớn hơn 6 ký tự')
+                    .isLength({ min: 6, max: 12 }).withMessage('Password must be 5 - 30 charactors')
             ]
         }
-        case 'createUser': {
+        case 'registerUser': {
             return [
                 body('nick_name').not().isEmpty().withMessage('Nickname is required')
-                    .isLength({ min: 5 }).withMessage('Nickname phải lớn hơn 5 ký tự')
+                    .isLength({ min: 5, max: 30 }).withMessage('Nickname must be 5 - 30 charactors')
                 ,
                 body('gender').exists().isInt()
                 ,
@@ -29,7 +29,13 @@ let validate = (method) => {
                 ,
                 body('password')
                     .not().isEmpty().withMessage('Password is required')
-                    .isLength({ min: 6 }).withMessage('Password phải lớn hơn 6 ký tự')
+                    .isLength({ min: 6, max: 12 }).withMessage('Password must be 5 - 30 charactors')
+                    .custom((value, { req }) => {
+                        if (value !== req.body.rep_password) {
+                            throw new Error('Password confirmation is incorrect');
+                        }
+                    })
+                ,
             ]
         }
     }

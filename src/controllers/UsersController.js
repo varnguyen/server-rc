@@ -15,11 +15,18 @@ const { INTERNAL_SERVER_ERROR, EMAIL_REGISTER, NICK_NAME_REGISTER, UPDATE_SUCCES
 
 // Create and save a new user
 let create = (req, result) => {
+    const { nick_name, email, password, gender } = req.body;
+
     // Validate request
     if (!req.body) {
         result.status(400).send({ message: CONTENT_CAN_NOT_EMPTY });
     }
-    const { nick_name, email, password, gender } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return result.status(422).json({ errors: errors.array() });
+    }
+
     // Create a Customer
     const user = new User({ nick_name, email, password, gender });
     const hash = bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
@@ -36,11 +43,14 @@ let create = (req, result) => {
                                 if (err) {
                                     result.status(500).send({ message: err.message || INTERNAL_SERVER_ERROR });
                                 }
-                                else result.send({
-                                    code: 0,
-                                    message: "",
-                                    data: res
-                                });
+                                else {
+                                    delete res.password
+                                    result.send({
+                                        code: 0,
+                                        message: "",
+                                        data: res
+                                    });
+                                }
                             });
                         } else {
                             result.status(500).send({ message: INTERNAL_SERVER_ERROR });
@@ -112,11 +122,15 @@ let getUserInfo = async (req, result) => {
             } else {
                 result.status(500).send({ message: "Error retrieving user with id " + userId });
             }
-        } else result.status(200).send({
-            code: 0,
-            message: "",
-            data: res
-        });
+        } else {
+            delete res.password
+            result.status(200).send({
+                code: 0,
+                message: "",
+                data: res
+            });
+        }
+
     })
 }
 
@@ -138,11 +152,14 @@ let update = async (req, result) => {
             } else {
                 result.status(500).send({ message: "Error updating user with id " + userId });
             }
-        } else result.send({
-            code: 0,
-            message: UPDATE_SUCCESS,
-            data: res
-        });
+        } else {
+            delete res.password
+            result.send({
+                code: 0,
+                message: UPDATE_SUCCESS,
+                data: res
+            });
+        }
     });
 }
 
